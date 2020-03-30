@@ -49,9 +49,11 @@ class UserService {
 
 		public function checkLogin() {
 			if (Auth::check()) {
+				$user = auth()->user();
+				$user->roles = auth()->user()->getRoles();
 				return response()->json([
 					'success' => true,
-					'data' => Auth::user()
+					'data' => $user
 				]);
 			}
 			return response()->json([

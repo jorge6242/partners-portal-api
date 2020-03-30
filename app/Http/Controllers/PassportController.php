@@ -54,15 +54,10 @@ class PassportController extends Controller
         ];
  
         if (auth()->attempt($credentials)) {
-            $partner = $this->shareRepository->findByShare($request->username);
-            if($header[0] === 'portal' && !$partner) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Solo pueden acceder Socios'
-                ])->setStatusCode(401);
-            }
             $token = auth()->user()->createToken('TutsForWeb')->accessToken;
-            return response()->json(['token' => $token, 'user' => auth()->user()], 200);
+            $user = auth()->user();
+            $user->roles = auth()->user()->getRoles();
+            return response()->json(['token' => $token, 'user' =>  $user], 200);
         } else {
             return response()->json([
                 'success' => false,

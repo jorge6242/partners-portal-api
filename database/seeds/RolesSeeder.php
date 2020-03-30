@@ -33,6 +33,11 @@ class RolesSeeder extends Seeder
                 'slug' => 'socio', 
                 'description' => 'Permisos para socios' 
             ],
+            [ 
+                'name' => 'promotor', 
+                'slug' => 'promotor', 
+                'description' => 'Permisos para promotor' 
+            ],
         ];
         foreach ($data as $element) {
             Role::create([

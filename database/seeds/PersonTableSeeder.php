@@ -3,6 +3,8 @@
 use App\Person;
 use App\Gender;
 use App\Country;
+use App\PersonRelation;
+use App\RelationType;
 use App\StatusPerson;
 use App\MaritalStatus;
 use Illuminate\Database\Seeder;
@@ -46,6 +48,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Casado',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Johana',
@@ -76,6 +80,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Casado',
                 'gender' => 'Femenino',
                 'country' => 'Venezuela',
+                'main_relation' => '18934599',
+                'relationship' => 'CONYUGE'
             ],
             [ 
                 'name' => 'Alysson',
@@ -106,6 +112,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Femenino',
                 'country' => 'Venezuela',
+                'main_relation' => '18934599',
+                'relationship' => 'HIJO/HIJA'
             ],
             [ 
                 'name' => 'Tobias',
@@ -136,6 +144,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '18934599',
+                'relationship' => 'HIJO/HIJA'
             ],
             [ 
                 'name' => 'Luis',
@@ -166,6 +176,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Ernesto',
@@ -196,6 +208,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Miguel',
@@ -226,6 +240,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'German',
@@ -256,6 +272,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Oswaldo',
@@ -286,6 +304,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Alexis',
@@ -316,6 +336,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
             [ 
                 'name' => 'Yesenia',
@@ -346,6 +368,8 @@ class PersonTableSeeder extends Seeder
                 'maritalStatus' => 'Soltero',
                 'gender' => 'Masculino',
                 'country' => 'Venezuela',
+                'main_relation' => '',
+                'relationship' => ''
             ],
         ];
         foreach ($data as $element) {
@@ -353,7 +377,8 @@ class PersonTableSeeder extends Seeder
             $maritalStatus = MaritalStatus::where('description',$element['maritalStatus'])->first();
             $gender = Gender::where('description',$element['gender'])->first();
             $country = Country::where('description',$element['country'])->first();
-            Person::create([
+            $personRelation = Person::where('rif_ci', $element['main_relation'])->first();
+            $person = Person::create([
                 'name' => $element['name'],
                 'last_name' => $element['last_name'],
                 'rif_ci' => $element['rif_ci'],
@@ -383,6 +408,15 @@ class PersonTableSeeder extends Seeder
                 'gender_id' => $gender->id,
                 'countries_id' => $country->id,
             ]);
+            if($personRelation) {
+                $relationType = RelationType::where('description', $element['relationship'])->first(); 
+                PersonRelation::create([
+                    'base_id' => $personRelation->id,
+                    'related_id' => $person->id,
+                    'relation_type_id' => $relationType->id,
+                    'status' => 1
+                ]);
+            }
         }
     }
 }

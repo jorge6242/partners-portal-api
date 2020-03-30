@@ -127,6 +127,7 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/person-statistics-exception', 'PersonController@getExceptionStatistics');
         Route::get('/person-statistics-birthday', 'PersonController@getCountBirthdays');
         Route::get('/person-families-partner', 'PersonController@getFamilyByPartner');
+        Route::get('/person-partners', 'PersonController@getPartners');
 
         Route::get('/check-login', 'UserController@checkLogin');
         Route::resource('/user', 'UserController');

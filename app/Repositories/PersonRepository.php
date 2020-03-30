@@ -60,6 +60,11 @@ class PersonRepository  {
       return $this->model->query()->paginate($perPage);
     }
 
+    public function getPartners($perPage) {
+      return $this->model->query()->where('isPartner', 1)->paginate($perPage);
+    }
+
+
     public function delete($id) {
      return $this->model->find($id)->delete();
     }

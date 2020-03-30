@@ -49,6 +49,13 @@ class UsersTableSeeder extends Seeder
                 'password' => '123456',
                 'role' => 'socio',
             ],
+            [ 
+                'name' => 'Promotor test',
+                'username' => 'promotor',
+                'email' => 'promotor@test.com',
+                'password' => '123456',
+                'role' => 'promotor',
+            ],
         ];
         foreach ($users as $user) {
            $role = Role::where('slug',$user['role'])->first();

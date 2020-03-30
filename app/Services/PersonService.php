@@ -36,6 +36,10 @@ class PersonService {
 		return $this->person->all($perPage);
 	}
 
+	public function getPartners($perPage) {
+		return $this->person->getPartners($perPage);
+	}
+
 	public function reportAll() {
 		return $this->person->reportAll();
 	}

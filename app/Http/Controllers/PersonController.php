@@ -25,6 +25,19 @@ class PersonController extends Controller
             'data' => $persons
         ]);
     }
+    /**
+    * Display a listing of the resource.
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function getPartners(Request $request)
+   {
+       $persons = $this->service->getPartners($request->query('perPage'));
+       return response()->json([
+           'success' => true,
+           'data' => $persons
+       ]);
+   }
 
         /**
      * Display a listing of the resource.
@@ -401,8 +414,7 @@ class PersonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getFamilyByPartner(Request $request) {
-        $share = auth()->user()->username;
-        $data = $this->service->getFamilyByPartner($share);
+        $data = $this->service->getFamilyByPartner($request['share']);
             return response()->json([
                 'success' => true,
                 'data' => $data
