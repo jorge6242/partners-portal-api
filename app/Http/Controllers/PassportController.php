@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\User;
+use App\Repositories\ShareRepository;
+
+use Illuminate\Http\Request;
+
+class PassportController extends Controller
+{
+    public function __construct(ShareRepository $shareRepository)
+    {
+    $this->shareRepository = $shareRepository;
+    }
+   /**
+     * Handles Registration Request
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ]);
+ 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ]);
+ 
+        $token = $user->createToken('TutsForWeb')->accessToken;
+ 
+        return response()->json(['token' => $token], 200);
+    }
+ 
+    /**
+     * Handles Login Request
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {   
+        $header = $request->header();
+        $header = $header['partners-application'];
+        $credentials = [
+            'username' => $request->username,
+            'password' => $request->password
+        ];
+ 
+        if (auth()->attempt($credentials)) {
+            $partner = $this->shareRepository->findByShare($request->username);
+            if($header[0] === 'portal' && !$partner) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo pueden acceder Socios'
+                ])->setStatusCode(401);
+            }
+            $token = auth()->user()->createToken('TutsForWeb')->accessToken;
+            return response()->json(['token' => $token, 'user' => auth()->user()], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Credenciales incorrectas'
+            ])->setStatusCode(401);
+        }
+    }
+ 
+    /**
+     * Returns Authenticated User Details
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function details()
+    {
+        return response()->json(['user' => auth()->user()], 200);
+    }
+}
