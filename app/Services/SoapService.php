@@ -24,7 +24,7 @@ class SoapService
       'encoding' => 'UTF-8', 
       'verifypeer' => false, 
       'verifyhost' => false, 
-      'soap_version' => 2, 
+      'soap_version' => SOAP_1_2, 
       'trace' => 1, 'exceptions' => 1, 
       "connection_timeout" => 180, 
       'stream_context' => stream_context_create($opts),
