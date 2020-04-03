@@ -15,8 +15,8 @@ class LoginTokenService {
 		return $this->repository->all();
     }
     
-    public function find($share) {
-		return $this->repository->find($share);
+    public function find($partner, $token) {
+		return $this->repository->find($partner,$token);
 	}
 
 }

@@ -119,10 +119,6 @@ class UserController extends Controller
      */
     public function forcedLogin(Request $request)
     {
-        $data = $this->userService->forcedLogin($request['username']);
-            return response()->json([
-                'success' => true,
-                'data' => $data
-            ]);
+        return $this->userService->forcedLogin($request);
     }
 }

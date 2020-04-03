@@ -5,11 +5,17 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use App\BackOffice\Services\LoginTokenService;
+
 
 class UserService {
 
-		public function __construct(UserRepository $repository) {
-			$this->repository = $repository ;
+		public function __construct(
+			UserRepository $repository,
+			LoginTokenService $loginTokenService
+			) {
+			$this->repository = $repository;
+			$this->loginTokenService = $loginTokenService;
 		}
 
 		public function index() {
@@ -49,6 +55,7 @@ class UserService {
 
 		public function checkLogin() {
 			if (Auth::check()) {
+				$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 				$user = auth()->user();
 				$user->roles = auth()->user()->getRoles();
 				return response()->json([
@@ -62,15 +69,21 @@ class UserService {
             ])->setStatusCode(401);
 		}
 
-		public function forcedLogin(string $username) {
-			$user =  $this->repository->forcedLogin($username);
+		public function forcedLogin($request) {
+			$user =  $this->repository->forcedLogin($request['socio']);
 			if($user) {
-				$auth = Auth::login($user);
-				$token = auth()->user()->createToken('TutsForWeb')->accessToken;
-				$user = auth()->user();
-				$user->roles = auth()->user()->getRoles();
-					return ['token' => $token, 'user' =>  $user];
+				$token = $this->loginTokenService->find($request['socio'], $request['token']);
+				if($token) {
+					$auth = Auth::login($user);
+					$token = auth()->user()->createToken('TutsForWeb')->accessToken;
+					$user = auth()->user();
+					$user->roles = auth()->user()->getRoles();
+					return response()->json(['token' => $token, 'user' =>  $user], 200);
+					}
 				}
-			return false;
+		return response()->json([
+			'success' => false,
+			'message' => 'You must login first'
+		])->setStatusCode(401);
 		}
 }

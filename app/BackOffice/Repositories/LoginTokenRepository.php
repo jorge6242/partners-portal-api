@@ -17,7 +17,7 @@ class LoginTokenRepository  {
       return $this->model->all();
     }
 
-    public function find($share) {
-        return $this->model->where('Login', $share)->first();
+    public function find($partner, $token) {
+        return $this->model->where('Login', $partner)->where('token', $token)->where('expiration' ,'>=' ,date('Y') )->first();
     }
 }
