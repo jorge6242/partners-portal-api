@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
             ],
             [ 
                 'name' => 'Partner Test',
-                'username' => '120610',
+                'username' => 'A-1713',
                 'email' => 'partnertest@test.com',
                 'password' => '123456',
                 'role' => 'socio',

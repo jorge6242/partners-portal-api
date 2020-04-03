@@ -122,7 +122,7 @@ class Person extends Model
         return $this->hasMany('App\Share','id_persona', 'id');
     }
 
-            /**
+    /**
      * The sports that belong to the person.
      */
     public function relationship()

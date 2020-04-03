@@ -159,7 +159,33 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/access-control-partner-family-statistics', 'AccessControlController@getPartnersFamilyStatistics');
         Route::get('/access-control-guest-statistics', 'AccessControlController@getGuestStatistics');
 
-        Route::get('/soap-test', 'WebServiceController@show');
+        
+        Route::get('/banco-emisor', 'BancoEmisorController@index');
+        Route::get('/banco-receptor', 'BancoReceptorController@index');
+
+        Route::resource('/menu', 'MenuController');
+        Route::get('/menu-list', 'MenuController@getList');
+        Route::get('/menu-list-search', 'MenuController@search');
+
+        Route::resource('/menu-item', 'MenuItemController');
+        Route::get('/menu-item-list', 'MenuItemController@getList');
+        Route::get('/menu-item-search', 'MenuItemController@search');
+
+
+        Route::resource('/widget', 'WidgetController');
+        Route::get('/widget-list', 'WidgetController@getList');
+        
+        // Back Office
+        
+        Route::post('/reporte-pagos', 'ReportePagosController@create');
+        Route::get('/reporte-pagos-all', 'ReportePagosController@getAll');
+
+        Route::get('/get-client', 'ClientesController@findByNit');
+        Route::get('/status-account', 'StatusAccountController@getStatusAccount');
+
+        Route::get('/get-balance', 'WebServiceController@getBalance');
+        Route::get('/get-reported-payments', 'WebServiceController@getReportedPayments');
+        Route::get('/get-unpaid-invoices', 'WebServiceController@getUnpaidInvoices');
     });
 });
 
@@ -167,3 +193,5 @@ Route::prefix('api/v1')->group(function () {
 Route::get('/person-report', 'PersonController@report');
 Route::get('/partner-report', 'PersonController@getReportByPartner');
 Route::get('/person-filter-report', 'PersonController@filterReport');
+Route::get('/login-token', 'LoginTokenController@find');
+Route::get('/get-saldo', 'WebServiceController@getSaldo');

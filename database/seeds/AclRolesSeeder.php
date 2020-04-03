@@ -56,7 +56,11 @@ class AclRolesSeeder extends Seeder
 // $roleModerator = Role::find(2); // moderator
 // $roleModerator->assignPermission('maestro-banco-ver');
 
-
+$user = User::where('username', 'A-1713')->first();
+// $admin = Role::where('slug', 'administrador')->first();
+// $user->assignRole($admin->id);
+// $user->revokeRole('administrador');
+dd($user->getRoles());
 // $user = User::find(1);
 // $user->getPermissions();
 
