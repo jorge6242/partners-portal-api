@@ -56,38 +56,38 @@ class MenuTableSeeder extends Seeder
             'parent' => 0,
             'order' => 0,
             'description' => 'Facturacion',
-            'route' => '',
+            'route' => null,
             'menu_id' => $menuBase->id,
         ]);
 
         MenuItem::create([
             'name' => 'Reporte de Pagos',
             'slug' => 'reporte-pagos',
-            'parent' => 0,
+            'parent' => $fact->id,
             'order' => 0,
             'description' => 'Reporte de Pagos',
             'route' => '/dashboard/reporte-pagos',
-            'menu_id' => $fact->id,
+            'menu_id' => $menuBase->id,
         ]);
 
         MenuItem::create([
             'name' => 'Estado de Cuenta',
             'slug' => 'estado-cuenta',
-            'parent' => 0,
+            'parent' => $fact->id,
             'order' => 0,
             'description' => 'Estado de Cuenta',
             'route' => '/dashboard/status-account',
-            'menu_id' => $fact->id,
+            'menu_id' => $menuBase->id,
         ]);
 
         MenuItem::create([
             'name' => 'Facturas por Pagar',
             'slug' => 'facturas-por-pagar',
-            'parent' => 0,
+            'parent' => $fact->id,
             'order' => 0,
             'description' => 'Facturas por Pagar',
             'route' => '/dashboard/facturas-por-pagar',
-            'menu_id' => $fact->id,
+            'menu_id' => $menuBase->id,
         ]);
     }
 }

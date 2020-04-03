@@ -17,7 +17,7 @@ class MenuItemRoleSeeder extends Seeder
         $data = [ 
             ['menuItem' => 'inicio', 'role' => 'promotor' ],
             [ 'menuItem' => 'notas', 'role' => 'promotor' ],
-            [ 'menuItem' => 'actualizacion-datos', 'role' => 'socio' ],
+            [ 'menuItem' => 'actualizacion-datos', 'role' => 'promotor' ],
             [ 'menuItem' => 'facturacion', 'role' => 'socio' ],
             [ 'menuItem' => 'reporte-pagos', 'role' => 'socio' ],
             [ 'menuItem' => 'estado-cuenta', 'role' => 'socio' ],
