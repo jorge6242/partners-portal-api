@@ -61,4 +61,16 @@ class UserService {
                 'message' => 'You must login first'
             ])->setStatusCode(401);
 		}
+
+		public function forcedLogin(string $username) {
+			$user =  $this->repository->forcedLogin($username);
+			if($user) {
+				$auth = Auth::login($user);
+				$token = auth()->user()->createToken('TutsForWeb')->accessToken;
+				$user = auth()->user();
+				$user->roles = auth()->user()->getRoles();
+					return ['token' => $token, 'user' =>  $user];
+				}
+			return false;
+		}
 }

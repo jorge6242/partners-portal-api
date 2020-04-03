@@ -195,3 +195,5 @@ Route::get('/partner-report', 'PersonController@getReportByPartner');
 Route::get('/person-filter-report', 'PersonController@filterReport');
 Route::get('/login-token', 'LoginTokenController@find');
 Route::get('/get-saldo', 'WebServiceController@getSaldo');
+
+Route::get('/forced-login', 'UserController@forcedLogin');

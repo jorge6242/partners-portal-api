@@ -14,12 +14,22 @@ class MenuItemRoleSeeder extends Seeder
      */
     public function run()
     {
-        $admin = Role::where('slug', 'administrador')->first();
-        $menuItem = MenuItem::where('slug', 'opcion-3.2.3')->first();
-        MenuItemRole::create([
-            'role_id' => $admin->id,
-            'menu_item_id' => $menuItem->id,
-        ]);
-
+        $data = [ 
+            ['menuItem' => 'inicio', 'role' => 'promotor' ],
+            [ 'menuItem' => 'notas', 'role' => 'promotor' ],
+            [ 'menuItem' => 'actualizacion-datos', 'role' => 'socio' ],
+            [ 'menuItem' => 'facturacion', 'role' => 'socio' ],
+            [ 'menuItem' => 'reporte-pagos', 'role' => 'socio' ],
+            [ 'menuItem' => 'estado-cuenta', 'role' => 'socio' ],
+            [ 'menuItem' => 'facturas-por-pagar', 'role' => 'socio' ],
+        ];
+        foreach ($data as $key => $value) {
+            $admin = Role::where('slug', $value['role'])->first();
+            $menuItem = MenuItem::where('slug', $value['menuItem'])->first();
+            MenuItemRole::create([
+                'role_id' => $admin->id,
+                'menu_item_id' => $menuItem->id,
+            ]);
+        }
     }
 }

@@ -20,101 +20,74 @@ class MenuTableSeeder extends Seeder
             'description' => 'Menu Base',
         ]);
 
-        $m1 = MenuItem::create([
-            'name' => 'Opción 1',
-            'slug' => 'opcion1',
+        MenuItem::create([
+            'name' => 'Inicio',
+            'slug' => 'inicio',
             'parent' => 0,
             'order' => 0,
-            'description' => 'Opción 1',
+            'description' => 'Inicio',
+            'route' => '/dashboard/main',
             'menu_id' => $menuBase->id,
         ]);
+
         MenuItem::create([
-            'name' => 'Opción 2',
-            'slug' => 'opcion2',
+            'name' => 'Notas',
+            'slug' => 'notas',
             'parent' => 0,
-            'order' => 1,
-            'description' => 'Opción 2',
+            'order' => 0,
+            'description' => 'Notas',
+            'route' => '/dashboard/main',
             'menu_id' => $menuBase->id,
         ]);
-        $m3 = MenuItem::create([
-            'name' => 'Opción 3',
-            'slug' => 'opcion3',
+
+        MenuItem::create([
+            'name' => 'Actualizacion de Datos',
+            'slug' => 'actualizacion-datos',
             'parent' => 0,
-            'order' => 2,
-            'description' => 'Opción 3',
+            'order' => 0,
+            'description' => 'Actualizacion de Datos',
+            'route' => '/dashboard/socio',
             'menu_id' => $menuBase->id,
         ]);
-        $m4 = MenuItem::create([
-            'name' => 'Opción 4',
-            'slug' => 'opcion4',
+
+       $fact = MenuItem::create([
+            'name' => 'Facturacion',
+            'slug' => 'facturacion',
             'parent' => 0,
-            'order' => 3,
-            'description' => 'Opción 4',
-            'menu_id' => $menuBase->id,
-        ]);
-        MenuItem::create([
-            'name' => 'Opción 1.1',
-            'slug' => 'opcion-1.1',
-            'parent' => $m1->id,
             'order' => 0,
-            'description' => 'Opción 1.1',
+            'description' => 'Facturacion',
+            'route' => '',
             'menu_id' => $menuBase->id,
         ]);
+
         MenuItem::create([
-            'name' => 'Opción 1.2',
-            'slug' => 'opcion-1.2',
-            'parent' => $m1->id,
-            'order' => 1,
-            'description' => '',
-            'menu_id' => $menuBase->id,
-        ]);
-        MenuItem::create([
-            'name' => 'Opción 3.1',
-            'slug' => 'opcion-3.1',
-            'parent' => $m3->id,
+            'name' => 'Reporte de Pagos',
+            'slug' => 'reporte-pagos',
+            'parent' => 0,
             'order' => 0,
-            'description' => 'Opción 1.2',
-            'menu_id' => $menuBase->id,
+            'description' => 'Reporte de Pagos',
+            'route' => '/dashboard/reporte-pagos',
+            'menu_id' => $fact->id,
         ]);
-        $m32 = MenuItem::create([
-            'name' => 'Opción 3.2',
-            'slug' => 'opcion-3.2',
-            'parent' => $m3->id,
-            'order' => 1,
-            'description' => 'Opción 3.2',
-            'menu_id' => $menuBase->id,
-        ]);
+
         MenuItem::create([
-            'name' => 'Opción 4.1',
-            'slug' => 'opcion-4.1',
-            'parent' => $m4->id,
+            'name' => 'Estado de Cuenta',
+            'slug' => 'estado-cuenta',
+            'parent' => 0,
             'order' => 0,
-            'description' => 'Opción 4.1',
-            'menu_id' => $menuBase->id,
+            'description' => 'Estado de Cuenta',
+            'route' => '/dashboard/status-account',
+            'menu_id' => $fact->id,
         ]);
+
         MenuItem::create([
-            'name' => 'Opción 3.2.1',
-            'slug' => 'opcion-3.2.1',
-            'parent' => $m32->id,
+            'name' => 'Facturas por Pagar',
+            'slug' => 'facturas-por-pagar',
+            'parent' => 0,
             'order' => 0,
-            'description' => 'Opción 3.2.1',
-            'menu_id' => $menuBase->id,
-        ]);
-        MenuItem::create([
-            'name' => 'Opción 3.2.2',
-            'slug' => 'opcion-3.2.2',
-            'parent' => $m32->id,
-            'order' => 1,
-            'description' => 'Opción 3.2.2',
-            'menu_id' => $menuBase->id,
-        ]);
-        MenuItem::create([
-            'name' => 'Opción 3.2.3',
-            'slug' => 'opcion-3.2.3',
-            'parent' => $m32->id,
-            'order' => 2,
-            'description' => 'Opción 3.2.3',
-            'menu_id' => $menuBase->id,
+            'description' => 'Facturas por Pagar',
+            'route' => '/dashboard/facturas-por-pagar',
+            'menu_id' => $fact->id,
         ]);
     }
 }

@@ -102,13 +102,27 @@ class UserController extends Controller
         }
     }
 
-        /**
+    /**
      * Show login user available
      *
      * @return \Illuminate\Http\Response
      */
     public function checkLogin()
     {
-        return $this->userService->checkLogin();
+     return $this->userService->checkLogin();
+    }
+
+        /**
+     * Show login user available
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function forcedLogin(Request $request)
+    {
+        $data = $this->userService->forcedLogin($request['username']);
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
     }
 }
