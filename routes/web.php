@@ -170,6 +170,7 @@ Route::prefix('api/v1')->group(function () {
         Route::resource('/menu-item', 'MenuItemController');
         Route::get('/menu-item-list', 'MenuItemController@getList');
         Route::get('/menu-item-search', 'MenuItemController@search');
+        Route::get('/menu-item-parents', 'MenuItemController@getParents');
 
 
         Route::resource('/widget', 'WidgetController');
@@ -197,3 +198,7 @@ Route::get('/login-token', 'LoginTokenController@find');
 Route::get('/get-saldo', 'WebServiceController@getSaldo');
 
 Route::get('/forced-login', 'UserController@forcedLogin');
+
+Route::get('/', function () {
+    return view('welcome');
+});

@@ -1,10 +1,12 @@
 <?php
 
 use App\Menu;
+use App\Role;
 use App\MenuItem;
+use App\MenuItemRole;
 use Illuminate\Database\Seeder;
 
-class MenuTableSeeder extends Seeder
+class CreateMenuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -37,6 +39,16 @@ class MenuTableSeeder extends Seeder
             'order' => 0,
             'description' => 'Notas',
             'route' => '/dashboard/main',
+            'menu_id' => $menuBase->id,
+        ]);
+
+        MenuItem::create([
+            'name' => 'Socios',
+            'slug' => 'socios',
+            'parent' => 0,
+            'order' => 0,
+            'description' => 'Socios',
+            'route' => '/dashboard/partner',
             'menu_id' => $menuBase->id,
         ]);
 
@@ -89,5 +101,24 @@ class MenuTableSeeder extends Seeder
             'route' => '/dashboard/facturas-por-pagar',
             'menu_id' => $menuBase->id,
         ]);
+
+        $data = [ 
+            ['menuItem' =>  'inicio', 'role' => 'promotor' ],
+            [ 'menuItem' => 'notas', 'role' => 'promotor' ],
+            [ 'menuItem' => 'socios', 'role' => 'promotor' ],
+            [ 'menuItem' => 'actualizacion-datos', 'role' => 'socio' ],
+            [ 'menuItem' => 'facturacion', 'role' => 'socio' ],
+            [ 'menuItem' => 'reporte-pagos', 'role' => 'socio' ],
+            [ 'menuItem' => 'estado-cuenta', 'role' => 'socio' ],
+            [ 'menuItem' => 'facturas-por-pagar', 'role' => 'socio' ],
+        ];
+        foreach ($data as $key => $value) {
+            $admin = Role::where('slug', $value['role'])->first();
+            $menuItem = MenuItem::where('slug', $value['menuItem'])->first();
+            MenuItemRole::create([
+                'role_id' => $admin->id,
+                'menu_item_id' => $menuItem->id,
+            ]);
+        }
     }
 }

@@ -60,7 +60,7 @@ class UserService {
 				$user->roles = auth()->user()->getRoles();
 				return response()->json([
 					'success' => true,
-					'data' => $user
+					'user' => $user
 				]);
 			}
 			return response()->json([
