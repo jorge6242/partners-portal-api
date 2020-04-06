@@ -29,7 +29,7 @@ class MenuItemController extends Controller
             'parent',
             'order',
             'enabled',
-            'menu_id',)->paginate($request->query('perPage'));
+            'menu_id')->paginate($request->query('perPage'));
         return response()->json([
             'success' => true,
             'data' => $data
