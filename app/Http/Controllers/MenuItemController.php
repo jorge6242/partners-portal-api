@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\MenuItem;
+use App\Repositories\MenuItemRoleRepository;
+
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 
 class MenuItemController extends Controller
 {
-    public function __construct(MenuItem $model)
+    public function __construct(
+        MenuItem $model, 
+        MenuItemRoleRepository $menuItemRoleRepository
+        )
 	{
 		$this->model = $model;
+		$this->menuItemRoleRepository = $menuItemRoleRepository;
     }
     // /**
     //  * Display a listing of the resource.
@@ -29,7 +35,7 @@ class MenuItemController extends Controller
             'parent',
             'order',
             'enabled',
-            'menu_id')->paginate($request->query('perPage'));
+            'menu_id')->with(['main','father'])->paginate($request->query('perPage'));
         return response()->json([
             'success' => true,
             'data' => $data
@@ -70,6 +76,18 @@ class MenuItemController extends Controller
      {
          $attributes = $request->all();
          $data = $this->model->create($attributes);
+         if ($request['roles']) {
+			$roles = $request['roles'];
+			if(count($roles['itemsToAdd'])) {
+				foreach ($roles['itemsToAdd'] as $itemsToAdd) {
+					$itemRole = $this->menuItemRoleRepository->find($data->id, $itemsToAdd['id']);
+					if(!$itemRole) {
+						$data = ['menu_item_id' => $data->id, 'role_id' => $itemsToAdd['id']];
+						$this->menuItemRoleRepository->create($data);
+					}
+				}
+			}
+		}
          return response()->json([
             'success' => true,
             'data' => $data
@@ -84,7 +102,7 @@ class MenuItemController extends Controller
     //  */
     public function show($id)
     {
-        $bank =$this->model->find($id, [
+        $data =$this->model->query()->select([
             'id',
             'name', 
             'slug', 
@@ -95,11 +113,11 @@ class MenuItemController extends Controller
             'order',
             'enabled',
             'menu_id',
-            ]);
-        if($bank) {
+            ])->where('id',$id)->with('roles')->first();
+        if($data) {
             return response()->json([
                 'success' => true,
-                'data' => $bank
+                'data' => $data
             ]);
         }
     }
@@ -114,6 +132,27 @@ class MenuItemController extends Controller
     public function update(Request $request, $id)
     {
         $attributes = $request->all();
+        if ($request['roles']) {
+			$roles = $request['roles'];
+			if(count($roles['itemsToAdd'])) {
+				foreach ($roles['itemsToAdd'] as $itemsToAdd) {
+					$menuRole = $this->menuItemRoleRepository->find($id, $itemsToAdd['id']);
+					if(!$menuRole) {
+						$data = ['menu_item_id' => $id, 'role_id' => $itemsToAdd['id']];
+						$this->menuItemRoleRepository->create($data);
+					}
+				}
+			}
+	
+			if(count($roles['itemsToRemove'])) {
+				foreach ($roles['itemsToRemove'] as $itemsToRemove) {
+					$menuRole = $this->menuItemRoleRepository->find($id, $itemsToRemove['id']);
+					if($menuRole) {
+						$this->menuItemRoleRepository->delete($menuRole->id);
+					}
+				}
+			}
+		}
         $bank = $this->model->find($id)->update($attributes);
         if($bank) {
             return response()->json([

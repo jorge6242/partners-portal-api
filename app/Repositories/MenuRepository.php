@@ -4,14 +4,16 @@ namespace App\Repositories;
 
 use App\Menu;
 use App\Role;
+use App\Parameter;
 use App\MenuItemRole;
 
 class MenuRepository  {
   
     protected $post;
 
-    public function __construct(Menu $model) {
+    public function __construct(Menu $model, Parameter $parameterModel) {
       $this->model = $model;
+      $this->parameterModel = $parameterModel;
     }
 
     public function find($id) {
@@ -51,14 +53,27 @@ class MenuRepository  {
       return $string;
     }
 
+    public function getMenuList() {
+      return $this->model->query()->select([
+        'id',
+        'name', 
+        'slug', 
+        'description',
+      ])->with(['items'])->get();
+    } 
+
     public function getList() {
+      $validMenu = $this->parameterModel->where('parameter', 'MENU_ID')->first();
       $menu = $this->model->query()->select([
         'id',
         'name', 
         'slug', 
         'description',
-      ])->with(['items'])->first();
-      $menuItems = $menu->items()->with(['roleMenu'])->get();
+      ])->where('id', $validMenu->value )->with(['items'])->first();
+      if(!$menu) {
+        return [];
+      }
+      $menuItems = $menu->items()->with(['icons'])->get();
       $arrayMenus = array();
       foreach ($menuItems as $key => $value) {
         $userRoles = $value->roleMenu()->get();

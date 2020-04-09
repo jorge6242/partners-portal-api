@@ -57,11 +57,25 @@ class PersonRepository  {
 
 
     public function all($perPage) {
-      return $this->model->query()->paginate($perPage);
+      return $this->model->query()->whereIn('isPartner', [1, 2])->paginate($perPage);
     }
 
     public function getPartners($perPage) {
       return $this->model->query()->where('isPartner', 1)->paginate($perPage);
+    }
+
+        /**
+     * get persons by query params
+     * @param  object $queryFilter
+    */
+    public function searchByPartners($queryFilter) {
+      $search;
+      if($queryFilter->query('term') === null) {
+        $search = $this->model->query()->where('isPartner', 1)->paginate(8);
+      } else {
+        $search = $this->model->where('name', 'like', '%'.$queryFilter->query('term').'%')->where('isPartner', 1)->paginate(8);
+      }
+     return $search;
     }
 
 
@@ -87,7 +101,8 @@ class PersonRepository  {
       if($queryFilter->query('term') === null) {
         $search = $this->model->all();
       } else {
-        $search = $this->model->where('name', 'like', '%'.$queryFilter->query('term').'%')->get();
+        $term = $queryFilter->query('term');
+        $search = $this->model->query()->whereLike(['name', 'last_name', 'rif_ci'], $term)->get();
       }
      return $search;
     }

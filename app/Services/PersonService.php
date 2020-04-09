@@ -161,6 +161,14 @@ class PersonService {
 	public function search($queryFilter) {
 		return $this->person->search($queryFilter);
 	 }
+
+	 	/**
+	 *  Search resource from repository
+	 * @param  object $queryFilter
+	*/
+	public function searchByPartners($queryFilter) {
+		return $this->person->searchByPartners($queryFilter);
+	 }
 	 
 
 	/**
@@ -244,7 +252,8 @@ class PersonService {
 	}
 
 	public function getFamilyByPartner($share) {
-		$person = $this->shareRepository->findByShare($share);
+		$shareUser = auth()->user()->username;
+		$person = $this->shareRepository->findByShare($shareUser);
 		return $this->person->getFamilyByPartner($person->partner->id);
 	}
 
