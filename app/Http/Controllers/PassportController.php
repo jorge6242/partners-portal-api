@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use App\Repositories\ShareRepository;
 
 use Illuminate\Http\Request;
