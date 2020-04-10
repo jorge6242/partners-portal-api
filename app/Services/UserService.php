@@ -83,7 +83,7 @@ class UserService {
 					$user = auth()->user();
 					$user->roles = auth()->user()->getRoles();
 					$newRoles = Role::where('id', auth()->user()->id)->get();
-					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $newRole], 200);
+					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $newRoles], 200);
 					}
 				}
 		return response()->json([
