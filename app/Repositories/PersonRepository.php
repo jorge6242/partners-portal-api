@@ -73,7 +73,10 @@ class PersonRepository  {
       if($queryFilter->query('term') === null) {
         $search = $this->model->query()->where('isPartner', 1)->paginate(8);
       } else {
-        $search = $this->model->where('name', 'like', '%'.$queryFilter->query('term').'%')->where('isPartner', 1)->paginate(8);
+        $search = $this->model->where('rif_ci', 'like', '%'.$queryFilter->query('term').'%')
+        ->orWhere('name', 'like', '%'.$queryFilter->query('term').'%')
+        ->orWhere('last_name', 'like', '%'.$queryFilter->query('term').'%')
+        ->where('isPartner', 1)->paginate(8);
       }
      return $search;
     }
@@ -102,7 +105,7 @@ class PersonRepository  {
         $search = $this->model->all();
       } else {
         $term = $queryFilter->query('term');
-        $search = $this->model->query()->whereLike(['name', 'last_name', 'rif_ci'], $term)->get();
+        $search = $this->model->query()->whereLike(['name', 'last_name'], $term)->where('rif_ci',$term)->get();
       }
      return $search;
     }
@@ -209,6 +212,7 @@ class PersonRepository  {
       }
      return $search;
     }
+
     /**
      * get persons by query params
      * @param  object $queryFilter
@@ -219,6 +223,20 @@ class PersonRepository  {
         $search = $this->model->query()->where('id', '!=', $queryFilter->query('id'))->where('type_person', 1)->paginate($queryFilter->query('perPage'));
       } else {
         $search = $this->model->where('id', '!=', $queryFilter->query('id'))->where('type_person', 1)->where('name', 'like', '%'.$queryFilter->query('term').'%')->paginate($queryFilter->query('perPage'));
+      }
+     return $search;
+    }
+
+        /**
+     * get persons by query params
+     * @param  object $queryFilter
+    */
+    public function searchCompanyPersonToAssign($queryFilter) {
+      $search;
+      if($queryFilter->query('term') === null) {
+        $search = $this->model->query()->where('type_person', 2)->get();
+      } else {
+        $search = $this->model->where('id', '!=', $queryFilter->query('id'))->where('type_person', 2)->where('name', 'like', '%'.$queryFilter->query('term').'%')->get();
       }
      return $search;
     }

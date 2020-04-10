@@ -40,6 +40,7 @@ class Person extends Model
         'user',
         'date',
         'status',
+        'company_person_id'
     ];
 
     /**
