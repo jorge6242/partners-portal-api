@@ -57,7 +57,8 @@ class PassportController extends Controller
             $token = auth()->user()->createToken('TutsForWeb')->accessToken;
             $user = auth()->user();
             $user->roles = auth()->user()->getRoles();
-            return response()->json(['token' => $token, 'user' =>  $user], 200);
+            $newRoles = Role::where('id', auth()->user()->id)->get();
+            return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $newRoles], 200);
         } else {
             return response()->json([
                 'success' => false,

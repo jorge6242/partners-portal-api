@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Role;
+
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -58,10 +60,11 @@ class UserService {
 				$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 				$user = auth()->user();
 				$user->roles = auth()->user()->getRoles();
+				$newRoles = Role::where('id', auth()->user()->id)->get();
 				return response()->json([
 					'success' => true,
 					'user' => $user,
-					'userRoles' => auth()->user()->getRoles()
+					'userRoles' => $newRoles
 				]);
 			}
 			return response()->json([
@@ -79,7 +82,8 @@ class UserService {
 					$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 					$user = auth()->user();
 					$user->roles = auth()->user()->getRoles();
-					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => auth()->user()->getRoles()], 200);
+					$newRoles = Role::where('id', auth()->user()->id)->get();
+					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $newRole], 200);
 					}
 				}
 		return response()->json([
