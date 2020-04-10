@@ -78,7 +78,7 @@ class UserService {
 					$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 					$user = auth()->user();
 					$user->roles = auth()->user()->getRoles();
-					return response()->json(['token' => $token, 'user' =>  $user], 200);
+					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => auth()->user()->getRoles()], 200);
 					}
 				}
 		return response()->json([
