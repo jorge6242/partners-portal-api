@@ -37,6 +37,7 @@ class PersonRepository  {
         'countries',
         'sports',
         'lockers',
+        'company',
         ])->first();
       $person->picture = url('storage/partners/'.$person->picture);
       return $person;
@@ -73,10 +74,13 @@ class PersonRepository  {
       if($queryFilter->query('term') === null) {
         $search = $this->model->query()->where('isPartner', 1)->paginate(8);
       } else {
-        $search = $this->model->where('rif_ci', 'like', '%'.$queryFilter->query('term').'%')
-        ->orWhere('name', 'like', '%'.$queryFilter->query('term').'%')
-        ->orWhere('last_name', 'like', '%'.$queryFilter->query('term').'%')
-        ->where('isPartner', 1)->paginate(8);
+
+        $searchQuery = trim($queryFilter->query('term'));
+        $requestData = ['name', 'last_name', 'rif_ci'];
+        $search = $this->model->where(function($q) use($requestData, $searchQuery) {
+                    foreach ($requestData as $field)
+                      $q->orWhere($field, 'like', "{$searchQuery}%");
+                  })->where('isPartner', 1)->paginate(8);
       }
      return $search;
     }
