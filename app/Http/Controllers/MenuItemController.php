@@ -25,7 +25,7 @@ class MenuItemController extends Controller
     //  */
     public function index(Request $request)
     {
-        $data = $this->model->query()->select(          
+        $data = $this->model->query()->select([
             'id',
             'name', 
             'slug', 
@@ -37,7 +37,7 @@ class MenuItemController extends Controller
             'enabled',
             'menu_id',
             'menu_item_icon_id',
-            )->with(['main','father', 'icons'])
+        ])->with(['main', 'father', 'icons'])
             ->orderBy('menu_id', 'ASC')
             ->orderBy('parent', 'ASC')
             ->orderBy('order', 'ASC')
