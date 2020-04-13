@@ -14,6 +14,10 @@ class RelationTypeRepository  {
       return $this->model->find($id);
     }
 
+    public function getList() {
+      return $this->model->all();
+    }
+
     public function create($attributes) {
       return $this->model->create($attributes);
     }

@@ -14,6 +14,10 @@ class RelationTypeService {
 	public function index() {
 		return $this->repository->all();
 	}
+	
+	public function getList() {
+		return $this->repository->getList();
+	}
 
 	public function create($request) {
 		if ($this->repository->checkRecord($request['description'])) {
