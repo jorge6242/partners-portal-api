@@ -15,6 +15,7 @@ class WebServiceController extends Controller
 
   public function getBalance()  { 
     $data = $this->soapService->getSaldo();
+    $data[0]->saldo = number_format((float)$data[0]->saldo,2);
     return response()->json([
       'success' => true,
       'data' => $data,

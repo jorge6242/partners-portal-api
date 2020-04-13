@@ -87,6 +87,11 @@ class SoapService
             }
             $i++;
         }
+        foreach ($newArray as $key => $value) {
+          $newArray[$key]->saldo = number_format((float)$value->saldo,2);
+          $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
+          $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
+        }
         return response()->json([
             'success' => true,
             'data' => $newArray,
@@ -119,6 +124,9 @@ class SoapService
             }
             }
             $i++;
+        }
+        foreach ($newArray as $key => $value) {
+          $newArray[$key]->nMonto = number_format((float)$value->nMonto,2);
         }
         return $newArray;
     }
