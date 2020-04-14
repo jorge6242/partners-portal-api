@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Person;
+use App\Share;
 use App\PersonRelation;
 use App\Repositories\ShareRepository;
 use App\Repositories\RelationTypeRepository;
@@ -19,7 +20,8 @@ class PersonRepository  {
       PersonRelationRepository $personRelationRepository,
       RelationTypeRepository $relationTypeRepository,
       ShareRepository $shareRepository,
-      AccessControlRepository $accessControlRepository
+      AccessControlRepository $accessControlRepository,
+      Share $shareModel
       )
       {
       $this->model = $model;
@@ -27,6 +29,7 @@ class PersonRepository  {
       $this->relationTypeRepository = $relationTypeRepository;
       $this->shareRepository = $shareRepository;
       $this->accessControlRepository = $accessControlRepository;
+      $this->shareModel = $shareModel;
     }
 
     public function find($id) {
@@ -62,7 +65,12 @@ class PersonRepository  {
     }
 
     public function getPartners($perPage) {
-      return $this->model->query()->where('isPartner', 1)->paginate($perPage);
+      $persons = $this->model->query()->with('shares')->where('isPartner', 1)->with([])->paginate($perPage);
+      foreach ($persons as $key => $value) {
+        unset($persons[$key]->shares);
+        $persons[$key]->shares = $this->parseShares($value->shares()->get());
+      }
+      return $persons;
     }
 
         /**
@@ -76,11 +84,23 @@ class PersonRepository  {
       } else {
 
         $searchQuery = trim($queryFilter->query('term'));
+        $this->share = $queryFilter->query('term');
         $requestData = ['name', 'last_name', 'rif_ci'];
-        $search = $this->model->where(function($q) use($requestData, $searchQuery) {
-                    foreach ($requestData as $field)
-                      $q->orWhere($field, 'like', "{$searchQuery}%");
+        $search = $this->model->with('shares')->where(function($q) use($requestData, $searchQuery) {
+                    foreach ($requestData as $field) {
+                       $q->orWhere($field, 'like', "{$searchQuery}%");
+                    }
+                    $persons = $this->shareModel->query()->where('share_number','like', '%'.$this->share.'%')->get();
+                    if(count($persons)) {
+                      foreach ($persons as $key => $value) {
+                        $q->orWhere('id', $value->id_persona);
+                      }
+                    }
                   })->where('isPartner', 1)->paginate(8);
+        foreach ($search as $key => $value) {
+          unset($search[$key]->shares);
+          $search[$key]->shares = $this->parseShares($value->shares()->get());
+        }
       }
      return $search;
     }
