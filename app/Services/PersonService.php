@@ -56,7 +56,7 @@ class PersonService {
 		}
 		$image = $request['picture'];
 		if($image !== null) {
-			\Image::make($request['picture'])->save(public_path('storage/partners2/').$request['rif_ci'].'.png');
+			\Image::make($request['picture'])->save(public_path('storage/partners/').$request['rif_ci'].'.png');
 			$request['picture'] = $request['rif_ci'].'.png';
 		} else {
 			$request['picture'] = "partner-empty.png";
