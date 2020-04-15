@@ -13,40 +13,40 @@ class CreateDefaultSystemParamsSeeder extends Seeder
     public function run()
     {
         $data = [
+                // [
+                //     'description' => 'Nombre del cliente',
+                //     'parameter' => 'CLIENT_NAME',
+                //     'value' => 'Cliente Demo',
+                //     'eliminable' => 1,
+                // ],
+                // [
+                //     'description' => 'logoweb.jpg',
+                //     'parameter' => 'CLIENT_LOGO',
+                //     'value' => 'logoweb.jpg',
+                //     'eliminable' => 1,
+                // ],
                 [
-                    'description' => 'Cliente Demo',
-                    'parameter' => 'CLIENT_NAME',
-                    'value' => 1,
-                    'eliminable' => 1,
-                ],
-                [
-                    'description' => 'logoweb.jpg',
-                    'parameter' => 'CLIENT_LOGO',
-                    'value' => 1,
-                    'eliminable' => 1,
-                ],
-                [
-                    'description' => '0',
+                    'description' => 'Sitio offline',
                     'parameter' => 'SITE_OFFLINE',
-                    'value' => 1,
+                    'value' => '0',
                     'eliminable' => 1,
                 ],
                 [
-                    'description' => '1.1.0',
+                    'description' => 'Version Base de datos',
                     'parameter' => 'DB_VERSION',
-                    'value' => 1,
+                    'value' => '1.1.0',
                     'eliminable' => 1,
                 ],
                 [
-                    'description' => '1.1.1',
+                    'description' => 'Version Interfaz',
                     'parameter' => 'FRONTEND_VERSION',
-                    'value' => 1,
+                    'value' => '1.1.1',
                     'eliminable' => 1,
                 ],
                 [
-                    'description' => '1.1.2',
+                    'description' => 'Version Backend',
                     'parameter' => 'BACKEND_VERSION',
-                    'value' => 1,
+                    'value' => '1.1.2',
                     'eliminable' => 1,
                 ]
         ];
