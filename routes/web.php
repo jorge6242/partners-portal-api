@@ -79,6 +79,7 @@ Route::prefix('api/v1')->group(function () {
         Route::resource('/parameter', 'ParameterController');
         Route::get('/parameter-list', 'ParameterController@getList');
         Route::get('/parameter-search', 'ParameterController@search');
+        Route::get('/parameter-logo', 'ParameterController@getLogo');
 
         Route::resource('/locker', 'LockerController');
         Route::get('/locker-list', 'LockerController@getList');
