@@ -270,22 +270,30 @@ class PersonRepository  {
      * @param  object $queryFilter
     */
     public function searchFamilyByPerson($queryFilter) {
-      $search;
-      if($queryFilter->query('term') === null) {
-        $person = $this->model->query()->where('id', $queryFilter->query('id'))->with('family')->first();
-        $familys = $person->family()->get();
-        foreach ( $familys as $key => $family) {
-          $currentPerson = PersonRelation::query()->where('base_id', $queryFilter->query('id'))->where('related_id', $family->id)->first();
-          $relation = $this->relationTypeRepository->find($currentPerson->relation_type_id);
-          $familys[$key]->relationType = $relation;
-          $familys[$key]->id = $currentPerson->id;
-          $familys[$key]->status = $currentPerson->status;
-        }
-       return $person->family = $familys;
-      } else {
-        $search = $this->model->where('id', '!=', 1)->where('type_person', 1)->where('name', 'like', '%'.$queryFilter->query('term').'%')->paginate($queryFilter->query('perPage'));
-      }
-     return $search;
+      if($queryFilter->query('id') !== null) {
+        return \DB::select("SELECT r.id, r.base_id, r.status, r.related_id   , p.name, p.last_name, p.rif_ci, p.card_number, r.relation_type_id,  t.description 
+        FROM person_relations r, people p, relation_types t
+        WHERE r.base_id=".$queryFilter->query('id')."
+        AND r.related_id=p.id 
+        AND t.id=r.relation_type_id");
+       }
+       return [];
+    //   $search;
+    //   if($queryFilter->query('term') === null) {
+    //     $person = $this->model->query()->where('id', $queryFilter->query('id'))->with('family')->first();
+    //     $familys = $person->family()->get();
+    //     foreach ( $familys as $key => $family) {
+    //       $currentPerson = PersonRelation::query()->where('base_id', $queryFilter->query('id'))->where('related_id', $family->id)->first();
+    //       $relation = $this->relationTypeRepository->find($currentPerson->relation_type_id);
+    //       $familys[$key]->relationType = $relation;
+    //       $familys[$key]->id = $currentPerson->id;
+    //       $familys[$key]->status = $currentPerson->status;
+    //     }
+    //    return $person->family = $familys;
+    //   } else {
+    //     $search = $this->model->where('id', '!=', 1)->where('type_person', 1)->where('name', 'like', '%'.$queryFilter->query('term').'%')->paginate($queryFilter->query('perPage'));
+    //   }
+    //  return $search;
     }
 
     public function assignPerson($attributes) {
