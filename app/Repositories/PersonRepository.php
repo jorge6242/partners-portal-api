@@ -88,7 +88,7 @@ class PersonRepository  {
         $requestData = ['name', 'last_name', 'rif_ci'];
         $search = $this->model->with('shares')->where(function($q) use($requestData, $searchQuery) {
                     foreach ($requestData as $field) {
-                       $q->orWhere($field, 'like', "{$searchQuery}%");
+                       $q->orWhere($field, 'like', "%{$searchQuery}%");
                     }
                     $persons = $this->shareModel->query()->where('share_number','like', '%'.$this->share.'%')->get();
                     if(count($persons)) {
