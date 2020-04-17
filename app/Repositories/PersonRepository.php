@@ -65,7 +65,7 @@ class PersonRepository  {
     }
 
     public function getPartners($perPage) {
-      $persons = $this->model->query()->with('shares')->where('isPartner', 1)->with([])->paginate($perPage);
+      $persons = $this->model->query()->with('shares')->whereIn('isPartner', [1,2])->paginate($perPage);
       foreach ($persons as $key => $value) {
         unset($persons[$key]->shares);
         $persons[$key]->shares = $this->parseShares($value->shares()->get());
@@ -96,7 +96,7 @@ class PersonRepository  {
                         $q->orWhere('id', $value->id_persona);
                       }
                     }
-                  })->where('isPartner', 1)->paginate(8);
+                  })->whereIn('isPartner', [1,2])->paginate(8);
         foreach ($search as $key => $value) {
           unset($search[$key]->shares);
           $search[$key]->shares = $this->parseShares($value->shares()->get());
