@@ -63,7 +63,7 @@ class CreateDefaultSystemParamsSeeder extends Seeder
                 ],                [
                     'description' => 'Servidor de Base de datos',
                     'parameter' => 'DB_SERVER',
-                    'value' => 'SQL SERVER',
+                    'value' => 'http://192.168.0.11',
                     'eliminable' => 1,
                 ]
         ];
