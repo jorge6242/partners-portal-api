@@ -12,6 +12,15 @@ class CreateDefaultSystemParamsSeeder extends Seeder
      */
     public function run()
     {
+        // 192.168.0.252
+        // 9001  portal-api
+        // 9002 club-api
+        // 9003 tournament-api
+        
+        // 8081 portal
+        // 8082 club
+        // 8083 tournament
+
         $data = [
                 // [
                 //     'description' => 'Nombre del cliente',
@@ -52,20 +61,20 @@ class CreateDefaultSystemParamsSeeder extends Seeder
                 [
                     'description' => 'Endpoint API URL',
                     'parameter' => 'ENDPOINT_API_URL',
-                    'value' => 'http://192.168.0.252:9001',
+                    'value' => 'http://192.168.0.252:9002',
                     'eliminable' => 1,
                 ],
-                [
-                    'description' => 'Nombre de Base de Datos',
-                    'parameter' => 'DB_NAME',
-                    'value' => 'partnersControl',
-                    'eliminable' => 1,
-                ],                [
-                    'description' => 'Servidor de Base de datos',
-                    'parameter' => 'DB_SERVER',
-                    'value' => 'http://192.168.0.11',
-                    'eliminable' => 1,
-                ]
+                // [
+                //     'description' => 'Nombre de Base de Datos',
+                //     'parameter' => 'DB_NAME',
+                //     'value' => 'partnersControl',
+                //     'eliminable' => 1,
+                // ],                [
+                //     'description' => 'Servidor de Base de datos',
+                //     'parameter' => 'DB_SERVER',
+                //     'value' => 'http://192.168.0.11',
+                //     'eliminable' => 1,
+                // ]
         ];
         foreach ($data as $key => $value) {
             Parameter::create([
