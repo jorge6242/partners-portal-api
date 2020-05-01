@@ -195,6 +195,7 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/get-balance', 'WebServiceController@getBalance');
         Route::get('/get-reported-payments', 'WebServiceController@getReportedPayments');
         Route::get('/get-unpaid-invoices', 'WebServiceController@getUnpaidInvoices');
+        Route::get('/set-order', 'WebServiceController@getOrder');
     });
 });
 

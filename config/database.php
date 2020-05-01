@@ -91,16 +91,20 @@ return [
             'prefix_indexes' => true,
         ],
         'sqlsrv_backoffice' => [
-            'driver' => 'sqlsrv',
+            'driver' => env('DB_BACKOFFICE_CONNECTION'),
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '192.168.0.11'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'backoffice'),
-            'username' => env('DB_USERNAME', 'sa'),
-            'password' => env('DB_PASSWORD', '12422099'),
+            'host' => env('DB_BACKOFFICE_HOST'),
+            'port' => env('DB_BACKOFFICE_PORT'),
+            'database' => env('DB_BACKOFFICE_DATABASE'),
+            'username' => env('DB_BACKOFFICE_USERNAME'),
+            'password' => env('DB_BACKOFFICE_PASSWORD'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'options'   => array(
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => true
+            ),
         ],
 
     ],

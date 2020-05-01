@@ -7,9 +7,14 @@ use SoapClient;
 class SoapService
 {
 
+  public function __construct() {
+		$this->url = env('WS_SOCIO_URL');
+		$this->domain = env('WS_SOCIO_DOMAIN_ID');
+	}
+
   public function getToken() {
     date_default_timezone_set('America/Caracas');
-    $domain_id = "CCC";
+    $domain_id =  $this->domain;
     $date = date('Ymd');
     $calculated_token = md5($domain_id.$date);
     $calculated_token = base64_encode(strtoupper(md5($domain_id.$date )));
@@ -33,7 +38,7 @@ class SoapService
   }
 
     public function getSaldo() {
-        $url = "http://190.216.224.53:8080/wsServiciosSociosCCC2/wsSociosCCC.asmx?WSDL";
+        $url = $this->url;
         try{
             $client = $this->getWebServiceClient($url);
             $user = auth()->user()->username;
@@ -88,6 +93,7 @@ class SoapService
             $i++;
         }
         foreach ($newArray as $key => $value) {
+          $newArray[$key]->originalAmount = $value->saldo;
           $newArray[$key]->saldo = number_format((float)$value->saldo,2);
           $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
           $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
