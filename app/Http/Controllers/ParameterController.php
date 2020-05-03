@@ -36,13 +36,14 @@ class ParameterController extends Controller
         $db = \DB::connection()->getDatabaseName();
         $dbHost = env('DB_HOST');
         $api = env('APP_URL');
+        $paypalClientId = env('PAYPAL_CLIENT_ID');
         $data = $this->service->getList();
         return response()->json([
             'success' => true,
             'data' => $data,
             'db' => $db,
             'api' => $api,
-            'dbHost' => $dbHost,
+            'paypalClientId' => $paypalClientId,
         ]);
     }
 

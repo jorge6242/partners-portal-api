@@ -67,7 +67,8 @@ class SoapService
   }
 
   public function getUnpaidInvoices() {
-    $url = "http://190.216.224.53:8080/wsServiciosSociosCCC3/wsSociosCCC.asmx?WSDL";
+    // $url = "http://190.216.224.53:8080/wsServiciosSociosCCC3/wsSociosCCC.asmx?WSDL";
+    $url = $this->url;
     try{
         $client = $this->getWebServiceClient($url);
         $user = auth()->user()->username;
@@ -84,7 +85,7 @@ class SoapService
             $arrlength = @count($registros);
             $acumulado = 0;
             for($x = 0; $x < $arrlength; $x++) {
-                $monto = $registros[$x]->total_fac;
+                $monto = $registros[$x]->saldo;
                 $acumulado = bcadd($acumulado, $monto, 2);
                 $registros[$x]->acumulado = $acumulado; 
                 array_push($newArray, $registros[$x]);
@@ -110,7 +111,7 @@ class SoapService
   }
 
   public function getReportedPayments() {
-    $url = "http://190.216.224.53:8080/wsServiciosSociosCCC3/wsSociosCCC.asmx?WSDL";
+    $url = $this->url;
     try{
         $client = $this->getWebServiceClient($url);
         $user = auth()->user()->username;
