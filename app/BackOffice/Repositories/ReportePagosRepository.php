@@ -22,4 +22,8 @@ class ReportePagosRepository  {
     public function create($attributes) {
         return $this->model->create($attributes);
       }
+
+      public function update($id, array $attributes) {
+        return $this->model->where('idPago', $id)->update($attributes);
+      }
 }

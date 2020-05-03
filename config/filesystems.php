@@ -67,6 +67,10 @@ return [
             'driver' => 'local',
             'root' => public_path('storage/partners'),
         ],
+        'paymentFiles' => [
+            'driver' => 'local',
+            'root' => public_path('storage/paymentFiles'),
+        ],
 
     ],
 

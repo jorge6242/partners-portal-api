@@ -67,7 +67,6 @@ class SoapService
   }
 
   public function getUnpaidInvoices() {
-    // $url = "http://190.216.224.53:8080/wsServiciosSociosCCC3/wsSociosCCC.asmx?WSDL";
     $url = $this->url;
     try{
         $client = $this->getWebServiceClient($url);
@@ -111,6 +110,7 @@ class SoapService
   }
 
   public function getReportedPayments() {
+    // $url = "http://190.216.224.53:8080/wsServiciosSociosCCC3/wsSociosCCC.asmx?WSDL";
     $url = $this->url;
     try{
         $client = $this->getWebServiceClient($url);
