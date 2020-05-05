@@ -47,8 +47,14 @@ class ReportePagosService {
 			$parseFile = $this->validateFile($attributes['file1']);
 			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
 			$indice = rand(1,5);
-
-			Storage::disk('paymentFiles')->put($filename,$parseFile->content);
+			if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
+				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
+					$filename = $date.'-'.$data->id.'.png';
+				}
+				\Image::make($attributes['file1'])->save(public_path('storage/paymentFiles/').$filename);
+			} else {
+				Storage::disk('paymentFiles')->put($filename,$parseFile->content);
+			}
 			$attr = [ 'Archivos' => $filename];
 			$this->repository->update($data->id, $attr);
 		}

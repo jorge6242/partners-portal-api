@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Clientes extends Model
 {
     protected $connection = "sqlsrv_backoffice";
-    protected $table = 'backoffice.dbo.clientes';
+    protected $table = 'clientes';
     protected $fillable = [
         'co_cli', 
         'tipo', 

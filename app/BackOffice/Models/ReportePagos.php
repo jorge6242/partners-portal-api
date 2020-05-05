@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReportePagos extends Model
 {
     protected $connection = "sqlsrv_backoffice";
-    protected $table = 'backoffice.dbo.portalpagos_ReportePagos';
+    protected $table = 'portalpagos_ReportePagos';
     protected $fillable = [
         'idPago', 
         'nMonto', 

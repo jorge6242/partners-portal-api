@@ -42,6 +42,7 @@ class ParameterController extends Controller
             'success' => true,
             'data' => $data,
             'db' => $db,
+            'dbHost' => $dbHost,
             'api' => $api,
             'paypalClientId' => $paypalClientId,
         ]);

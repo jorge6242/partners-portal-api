@@ -45,8 +45,16 @@ class WebServiceController extends Controller
   public function getOrder(Request $request){
     
     $user = auth()->user()->username;
-    $data = \DB::connection('sqlsrv_backoffice')->statement('exec backoffice.dbo.sp_PortalProcesarPagoFactura ?,?,?,?', 
+    $data = \DB::connection('sqlsrv_backoffice')->statement('exec sp_PortalProcesarPagoFactura ?,?,?,?', 
     array($user,$request['invoice'], $request['amount'],$request['order']));  
+   
+    if(!$data) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error de registro'
+      ])->setStatusCode(400);;
+    }
+
     return response()->json([
       'success' => true,
       'message' => $data
