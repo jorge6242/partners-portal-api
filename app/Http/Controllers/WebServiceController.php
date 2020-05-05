@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Doctrine\DBAL\Driver\PDOConnection;
 
-use SoapClient;
 use App\Services\SoapService;
 
 class WebServiceController extends Controller
@@ -37,6 +36,11 @@ class WebServiceController extends Controller
       'data' => $data,
     ]);;
   }
+
+  public function getStatusAccount()  { 
+    return $this->soapService->getStatusAccount();
+  }
+  
   // @group_id = N'0010-0010',
   // @invoices = N'0010-0010-4-2020-00',
   // @amount = 120,

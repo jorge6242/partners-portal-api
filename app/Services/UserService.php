@@ -64,7 +64,7 @@ class UserService {
 				return response()->json([
 					'success' => true,
 					'user' => $user,
-					'userRoles' => $newRoles
+					'userRoles' => $user->roles()->get()
 				]);
 			}
 			return response()->json([
@@ -82,7 +82,7 @@ class UserService {
 					$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 					$user = auth()->user();
 					$user->roles = auth()->user()->getRoles();
-					$newRoles = Role::where('id', auth()->user()->id)->get();
+					$newRoles = $user->roles()->get();
 					return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $newRoles], 200);
 					}
 				}

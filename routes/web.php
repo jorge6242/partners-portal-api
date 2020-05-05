@@ -191,12 +191,13 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/reporte-pagos-all', 'ReportePagosController@getAll');
 
         Route::get('/get-client', 'ClientesController@findByNit');
-        Route::get('/status-account', 'StatusAccountController@getStatusAccount');
 
         Route::get('/get-balance', 'WebServiceController@getBalance');
         Route::get('/get-reported-payments', 'WebServiceController@getReportedPayments');
         Route::get('/get-unpaid-invoices', 'WebServiceController@getUnpaidInvoices');
+        Route::get('/status-account', 'WebServiceController@getStatusAccount');
         Route::get('/set-order', 'WebServiceController@getOrder');
+        
     });
 });
 
