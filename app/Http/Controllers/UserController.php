@@ -121,4 +121,21 @@ class UserController extends Controller
     {
         return $this->userService->forcedLogin($request);
     }
+
+        /**
+     * Get the specified resource by search.
+     *
+     * @param  string $term
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request) {
+        $data = $this->userService->search($request);
+        if($data) {
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        }
+    }
 }
