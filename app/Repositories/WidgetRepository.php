@@ -62,7 +62,11 @@ class WidgetRepository  {
             'name',
             'slug',
             'description', 
-        ])->with(['widgetRole'])->get();
+        ])->with([
+          'widgetRole' => function($q) {
+            $q->with('role');
+          }
+          ])->get();
         $arrayWidgets = array();
         foreach ($widgets as $key => $value) {
             $widgetRoles = $value->widgetRole()->get();

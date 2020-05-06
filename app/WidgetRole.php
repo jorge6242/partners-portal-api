@@ -10,4 +10,8 @@ class WidgetRole extends Model
         'widget_id',
         'role_id',
     ];
+
+    public function role() {
+        return $this->hasOne('App\Role', 'id', 'role_id');
+    }
 }
