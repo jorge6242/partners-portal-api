@@ -53,7 +53,7 @@ class ReportePagosService {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 					$filename = $date.'-'.$data->id.'.png';
 				}
-				\Image::make($attributes['file1'])->save(public_path('storage/reportepagos/').$filename);
+				\Image::make($attributes['file1'])->save(public_path('storage/payments/').$filename);
 			} else {
 				Storage::disk('payments')->put($filename,$parseFile->content);
 			}
