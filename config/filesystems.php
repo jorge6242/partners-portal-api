@@ -63,37 +63,6 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
-        'partners' => [
-            'driver' => 'local',
-            'root' => public_path('storage/partners'),
-            'visibility' => 'public',
-            'permissions' => [
-                'file' => [
-                    'public' => 0664,
-                    'private' => 0600,
-                ],
-                'dir' => [
-                    'public' => 0775,
-                    'private' => 0700,
-                ],
-            ],
-        ],
-        'paymentFiles' => [
-            'driver' => 'local',
-            'root' => public_path('storage/paymentFiles'),
-            'visibility' => 'public',
-            'permissions' => [
-                'file' => [
-                    'public' => 0664,
-                    'private' => 0600,
-                ],
-                'dir' => [
-                    'public' => 0775,
-                    'private' => 0700,
-                ],
-            ],
-        ],
-
     ],
 
 ];
