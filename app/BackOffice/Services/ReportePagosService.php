@@ -41,7 +41,6 @@ class ReportePagosService {
 	}
 
 	public function create($attributes) {
-		Storage::disk('payments')->put('test.txt','test');
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
 			$date = Carbon::now()->format('Y-m-d-H:i:s');
