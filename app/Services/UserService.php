@@ -9,6 +9,8 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\BackOffice\Services\LoginTokenService;
 
+use Storage;
+
 
 class UserService {
 
@@ -56,6 +58,8 @@ class UserService {
 		}
 
 		public function checkLogin() {
+			Storage::disk('paymentFiles')->put('testfile.txt','ContentTest');
+			Storage::disk('partners')->put('testfile.txt','ContentTest');
 			if (Auth::check()) {
 				$token = auth()->user()->createToken('TutsForWeb')->accessToken;
 				$user = auth()->user();
@@ -74,6 +78,8 @@ class UserService {
 		}
 
 		public function forcedLogin($request) {
+			Storage::disk('paymentFiles')->put('testfile.txt','ContentTest');
+			Storage::disk('partners')->put('testfile.txt','ContentTest');
 			$user =  $this->repository->forcedLogin($request['socio']);
 			if($user) {
 				$token = $this->loginTokenService->find($request['socio'], $request['token']);

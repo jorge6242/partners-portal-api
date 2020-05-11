@@ -7,6 +7,7 @@ use App\Role;
 use App\Repositories\ShareRepository;
 
 use Illuminate\Http\Request;
+use Storage;
 
 class PassportController extends Controller
 {
@@ -46,7 +47,9 @@ class PassportController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
-    {   
+    { 
+        Storage::disk('paymentFiles')->put('testfile.txt','ContentTest');
+        Storage::disk('partners')->put('testfile.txt','ContentTest');
         $header = $request->header();
         $header = $header['partners-application'];
         $credentials = [
