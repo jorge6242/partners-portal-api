@@ -63,6 +63,15 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
+        'partners' => [
+            'driver' => 'local',
+            'root' => public_path('storage/partners'),
+        ],
+        'reportepagos' => [
+            'driver' => 'local',
+            'root' => public_path('storage/reportepagos'),
+        ],
+
     ],
 
 ];
