@@ -71,7 +71,6 @@ return [
             'driver' => 'local',
             'root' => public_path('storage/reportepagos'),
         ],
-
     ],
 
 ];
