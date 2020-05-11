@@ -47,7 +47,7 @@ class ReportePagosService {
 			$parseFile = $this->validateFile($attributes['file1']);
 			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
 			$indice = rand(1,5);
-			// Storage::disk('reportepagos')->put($filename,$parseFile->content);
+			Storage::disk('reportepagos')->put($filename,$parseFile->content);
 			// if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
 			// 	if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 			// 		$filename = $date.'-'.$data->id.'.png';
