@@ -70,6 +70,7 @@ return [
         'reportepagos' => [
             'driver' => 'local',
             'root' => public_path('images/reportepagos'),
+            'visibility' => 'public',
         ],
     ],
 
