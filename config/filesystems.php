@@ -73,7 +73,7 @@ return [
         ],
         'reportepagos1' => [
             'driver' => 'local',
-            'root' => public_path('reportepagos1'),
+            'root' => public_path('images/reportepagos1'),
         ],
     ],
 
