@@ -71,6 +71,10 @@ return [
             'driver' => 'local',
             'root' => public_path('storage/reportepagos'),
         ],
+        'reportepagos1' => [
+            'driver' => 'local',
+            'root' => public_path('reportepagos1'),
+        ],
     ],
 
 ];

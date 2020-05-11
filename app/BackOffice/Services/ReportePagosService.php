@@ -51,9 +51,9 @@ class ReportePagosService {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 					$filename = $date.'-'.$data->id.'.png';
 				}
-				\Image::make($attributes['file1'])->save(public_path('storage/reportepagos/').$filename);
+				\Image::make($attributes['file1'])->save(public_path('reportepagos1/').$filename);
 			} else {
-				Storage::disk('reportepagos')->put($filename,$parseFile->content);
+				Storage::disk('reportepagos1')->put($filename,$parseFile->content);
 			}
 			$attr = [ 'Archivos' => $filename];
 			$this->repository->update($data->id, $attr);
