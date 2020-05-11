@@ -67,9 +67,9 @@ return [
             'driver' => 'local',
             'root' => public_path('storage/partners'),
         ],
-        'reportepagos' => [
+        'payments' => [
             'driver' => 'local',
-            'root' => public_path('images/reportepagos'),
+            'root' => public_path('storage/payments'),
             'permissions' => [
                 'file' => [
                     'public' => 0664,
