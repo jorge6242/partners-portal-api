@@ -47,8 +47,8 @@ class MenuService {
 				foreach ($items['itemsToAdd'] as $itemsToAdd) {
 					$menuItem = $this->findMenuItem($itemsToAdd['id'], $data->id );
 					if(!$menuItem) {
-						$data = ['menu_id' => $data->id];
-						$this->updateMenuItem($itemsToAdd['id'], $data);
+						$attr = ['menu_id' => $data->id];
+						$this->updateMenuItem($itemsToAdd['id'], $attr);
 					}
 				}
 			}
@@ -63,8 +63,8 @@ class MenuService {
 				foreach ($items['itemsToAdd'] as $itemsToAdd) {
 					$menuItem = $this->findMenuItem($itemsToAdd['id'], $request['id']);
 					if(!$menuItem) {
-						$data = ['menu_id' => $request['id']];
-						$this->updateMenuItem($itemsToAdd['id'], $data);
+						$attr = ['menu_id' => $request['id']];
+						$this->updateMenuItem($itemsToAdd['id'], $attr);
 					}
 				}
 			}
