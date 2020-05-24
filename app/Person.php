@@ -40,13 +40,15 @@ class Person extends Model
         'user',
         'date',
         'status',
-        'company_person_id'
+        'company_person_id',
+        'branch_company_id',
+        'company',
     ];
 
     /**
      * The sports that belong to the share.
      */
-    public function company()
+    public function companyPerson()
     {
         return $this->hasOne('App\Person', 'id', 'company_person_id');
     }

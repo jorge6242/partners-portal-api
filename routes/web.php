@@ -181,6 +181,10 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/menu-item-icon-search', 'MenuItemIconController@search');
         Route::get('/menu-item-icon-list', 'MenuItemIconController@getList');
 
+        Route::resource('/branch-company', 'BranchCompanyController');
+        Route::get('/branch-company-list', 'BranchCompanyController@getList');
+        Route::get('/branch-company-search', 'BranchCompanyController@search');
+
 
         Route::resource('/widget', 'WidgetController');
         Route::get('/widget-list', 'WidgetController@getList');

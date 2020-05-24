@@ -40,8 +40,16 @@ class PersonRepository  {
         'countries',
         'sports',
         'lockers',
-        'company',
-        ])->first();
+        'companyPerson',
+        'relationship'
+      ])->first();
+      if($relation = $person->isPartner == 1) {
+        $relation = 'SOCIO';
+      } else {
+        $relation = $person->relationship ? $person->relationship()->with(['relationType'])->first() : '';
+        $relation = $person->relationship ? $relation->relationType()->first()->description : '';
+      }
+      $person->relation = $relation;
       $person->picture = url('storage/partners/'.$person->picture);
       return $person;
     }
@@ -466,8 +474,12 @@ class PersonRepository  {
             ]);
         }
         ])->get();
+      $partner->relation = 'SOCIO';
       array_push($array, $partner);
       foreach ($families as $key => $family) {
+        $relation =  $family->relationship ? $family->relationship()->with(['relationType'])->first() : '';
+        $relation =  $family->relationship ? $relation->relationType()->first()->description : '';
+        $family->relation = $relation;
         array_push($array, $family);
       }
       return $array;
