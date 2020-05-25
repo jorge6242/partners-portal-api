@@ -41,6 +41,7 @@ class ReportePagosService {
 	}
 
 	public function create($attributes) {
+		Storage::disk('payments')->put('test.txt','Content');
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
 			$date = Carbon::now()->format('Y-m-d-H:i:s');
@@ -52,9 +53,9 @@ class ReportePagosService {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 					$filename = $date.'-'.$data->id.'.png';
 				}
-				\Image::make($attributes['file1'])->save(public_path('images/payments/').$filename);
+				\Image::make($attributes['file1'])->save(public_path('storage/payments/').$filename);
 			} else {
-				Storage::disk('local')->put('images/payments/'.$filename,$parseFile->content);
+				Storage::disk('payments')->put($filename,$parseFile->content);
 			}
 			$attr = [ 'Archivos' => $filename];
 			$this->repository->update($data->id, $attr);
