@@ -6,6 +6,7 @@ use App\Role;
 
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
+use App\Repositories\ShareRepository;
 use Illuminate\Http\Request;
 use App\BackOffice\Services\LoginTokenService;
 
@@ -16,10 +17,12 @@ class UserService {
 
 		public function __construct(
 			UserRepository $repository,
-			LoginTokenService $loginTokenService
+			LoginTokenService $loginTokenService,
+			ShareRepository $shareRepository
 			) {
 			$this->repository = $repository;
 			$this->loginTokenService = $loginTokenService;
+			$this->shareRepository = $shareRepository;
 		}
 
 		public function index() {
@@ -63,6 +66,10 @@ class UserService {
 				$user = auth()->user();
 				$user->roles = auth()->user()->getRoles();
 				$newRoles = Role::where('id', auth()->user()->id)->get();
+				$person = $this->shareRepository->findByShare($user->username);
+				if($person) {
+					$user->partnerProfile = $person->partner()->first();
+				}
 				return response()->json([
 					'success' => true,
 					'user' => $user,

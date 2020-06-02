@@ -43,6 +43,7 @@ class Person extends Model
         'company_person_id',
         'branch_company_id',
         'company',
+        'access_code',
     ];
 
     /**

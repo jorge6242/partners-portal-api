@@ -232,7 +232,7 @@ class ShareRepository  {
     public function findByShare($share) {
       return $this->model->where('share_number', $share)->with([
         'partner' => function($q) {
-          $q->select('id', 'name', 'last_name', 'rif_ci', 'card_number');
+          $q->select('id', 'name', 'last_name', 'rif_ci', 'card_number', 'access_code');
         }
         ])->first();
     }

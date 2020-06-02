@@ -57,9 +57,13 @@ class PassportController extends Controller
  
         if (auth()->attempt($credentials)) {
             $token = auth()->user()->createToken('TutsForWeb')->accessToken;
-            $user = auth()->user();;
+            $user = auth()->user();
             $user->roles = auth()->user()->getRoles();
             $newRoles = Role::where('id', auth()->user()->id)->get();
+            $person = $this->shareRepository->findByShare($request->username);
+            if($person) {
+                $user->partnerProfile = $person->partner()->first();
+            }
             return response()->json(['token' => $token, 'user' =>  $user, 'userRoles' => $user->roles()->get()], 200);
         } else {
             return response()->json([
