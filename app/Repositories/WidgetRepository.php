@@ -19,7 +19,8 @@ class WidgetRepository  {
         'id',
         'name',
         'slug',
-        'description', 
+        'description',
+        'order',
       ])->where('id', $id)->with(['roles'])->first();
     }
 
@@ -36,7 +37,8 @@ class WidgetRepository  {
         'id',
         'name',
         'slug',
-        'description',  
+        'description',
+        'order',
     ])->paginate($perPage);
     }
 
@@ -61,7 +63,8 @@ class WidgetRepository  {
             'id',
             'name',
             'slug',
-            'description', 
+            'description',
+            'order',
         ])->with([
           'widgetRole' => function($q) {
             $q->with('role');

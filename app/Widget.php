@@ -10,6 +10,7 @@ class Widget extends Model
         'name',
         'slug',
         'description',
+        'order'
     ];
 
     /**

@@ -191,8 +191,8 @@ Route::prefix('api/v1')->group(function () {
         
         // Back Office
         
-        Route::post('/reporte-pagos', 'ReportePagosController@create');
-        Route::get('/reporte-pagos-all', 'ReportePagosController@getAll');
+        Route::resource('/reporte-pagos', 'ReportePagosController');
+        Route::get('/reporte-pagos-filter', 'ReportePagosController@filter');
 
         Route::get('/get-client', 'ClientesController@findByNit');
 

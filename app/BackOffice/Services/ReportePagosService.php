@@ -23,6 +23,10 @@ class ReportePagosService {
 		return $this->repository->find($share);
 	}
 
+	public function update($request, $id) {
+		return $this->repository->update($id, $request);
+	  }
+
 	public function validateFile($file) {
 
 		$fileToParse = preg_replace('/^data:application\/\w+;base64,/', '', $file);
@@ -53,7 +57,7 @@ class ReportePagosService {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 					$filename = $date.'-'.$data->id.'.png';
 				}
-				\Image::make($attributes['file1'])->save(public_path('storage/payments/').$filename);
+				\Image::make($attributes['file1'])->save(public_path('/storage/payments/').$filename);
 			} else {
 				Storage::disk('payments')->put($filename,$parseFile->content);
 			}
@@ -63,5 +67,13 @@ class ReportePagosService {
 
 		return $data;
 	  }
+
+	public function read($id) {
+		return $this->repository->find($id);
+	}
+
+	public function filter($queryFilter) {
+		return $this->repository->filter($queryFilter);
+	}
 
 }

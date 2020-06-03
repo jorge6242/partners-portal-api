@@ -22,15 +22,25 @@ class ReportePagos extends Model
         'codCuentaDestino',
         'NroReferencia2',
         'dFechaRegistro',
-        'dFechaPago'
+        'dFechaPago',
+        'Moneda',
+        'Nota',
     ];
 
-        /**
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function cuenta()
     {
         return $this->belongsTo('App\BackOffice\Models\BancoReceptor', 'codCuentaDestino', 'cCodCuenta');
+    }
+
+            /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function bancoOrigen()
+    {
+        return $this->belongsTo('App\BackOffice\Models\BancoEmisor', 'codBancoOrigen', 'cCodBanco');
     }
 
     public $timestamps = false;

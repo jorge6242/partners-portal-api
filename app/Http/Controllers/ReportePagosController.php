@@ -17,12 +17,12 @@ class ReportePagosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAll(Request $request)
+    public function index(Request $request)
     {
-        $DATA = $this->service->index($request->query('perPage'));
+        $data = $this->service->index($request->query('perPage'));
         return response()->json([
             'success' => true,
-            'data' => $DATA
+            'data' => $data
         ]);
     }
 
@@ -32,10 +32,62 @@ class ReportePagosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         $data = $this->service->create($data, $request);
         return $data;
+    }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $response = $this->service->read($id);
+        if($response) {
+            return response()->json([
+                'success' => true,
+                'data' => $response
+            ]);
+        }
+    }
+
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $body = $request->all();
+        $response = $this->service->update($body, $id);
+        if($response) {
+            return response()->json([
+                'success' => true,
+                'data' => $response
+            ]);
+        }
+    }
+
+    /**
+     * Get the specified resource by search.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request) {
+        $data = $this->service->filter($request);
+        if($data) {
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        }
     }
 }
