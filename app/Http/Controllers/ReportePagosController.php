@@ -19,10 +19,16 @@ class ReportePagosController extends Controller
      */
     public function index(Request $request)
     {
+        if(auth()->user()->hasRole('socio')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos'
+            ])->setStatusCode(400);
+        }
         $data = $this->service->index($request->query('perPage'));
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -65,6 +71,12 @@ class ReportePagosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(auth()->is('socio')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos'
+            ])->setStatusCode(400);
+        }
         $body = $request->all();
         $response = $this->service->update($body, $id);
         if($response) {
@@ -82,6 +94,12 @@ class ReportePagosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function filter(Request $request) {
+        if(auth()->user()->hasRole('socio')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos'
+            ])->setStatusCode(400);
+        }
         $data = $this->service->filter($request);
         if($data) {
             return response()->json([
