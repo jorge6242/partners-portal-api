@@ -46,6 +46,14 @@ class ReportePagosRepository  {
           $q->where('status', $searchQuery->query('status'));
         }
 
+        if ($searchQuery->query('referencia') !== NULL) {
+          $q->where('NroReferencia', 'like', "%{$searchQuery->query('referencia')}%");
+        }
+
+        if ($searchQuery->query('bancoDestino') !== NULL) {
+          $q->where('codCuentaDestino', $searchQuery->query('bancoDestino'));
+        }
+
         if ($searchQuery->query('accion') !== NULL) {
           $q->where('Login', 'like', "%{$searchQuery->query('accion')}%");
         }
