@@ -71,7 +71,7 @@ class ReportePagosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(auth()->is('socio')) {
+        if(auth()->user()->hasRole('socio')) {
             return response()->json([
                 'success' => false,
                 'message' => 'No tiene permisos'
