@@ -37,6 +37,7 @@ class MenuItemController extends Controller
             'enabled',
             'menu_id',
             'menu_item_icon_id',
+            'show_mobile',
         ])->with(['main', 'father', 'icons'])
             ->orderBy('menu_id', 'ASC')
             ->orderBy('parent', 'ASC')
@@ -65,6 +66,7 @@ class MenuItemController extends Controller
             'parent',
             'order',
             'enabled',
+            'show_mobile',
             'menu_id'])->get();
         return response()->json([
             'success' => true,
@@ -120,6 +122,7 @@ class MenuItemController extends Controller
             'enabled',
             'menu_id',
             'menu_item_icon_id',
+            'show_mobile',
             ])->where('id',$id)->with('roles')->first();
         if($data) {
             return response()->json([

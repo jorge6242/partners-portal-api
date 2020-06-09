@@ -16,7 +16,8 @@ class MenuItem extends Model
         'order',
         'enabled',
         'menu_id',
-        'menu_item_icon_id'
+        'menu_item_icon_id',
+        'show_mobile'
     ];
 
     /**
