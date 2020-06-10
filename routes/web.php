@@ -188,6 +188,8 @@ Route::prefix('api/v1')->group(function () {
 
         Route::resource('/widget', 'WidgetController');
         Route::get('/widget-list', 'WidgetController@getList');
+
+        Route::resource('/notificacion', 'NotificacionesController');
         
         // Back Office
         

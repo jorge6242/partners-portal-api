@@ -13,7 +13,7 @@ class DepartmentRepository  {
     }
 
     public function find($id) {
-      return $this->model->find($id, ['id', 'description']);
+      return $this->model->find($id, ['id', 'description', 'email']);
     }
 
     public function create($attributes) {
@@ -25,11 +25,11 @@ class DepartmentRepository  {
     }
   
     public function all($perPage) {
-      return $this->model->query()->select(['id', 'description'])->paginate($perPage);
+      return $this->model->query()->select(['id', 'description', 'email'])->paginate($perPage);
     }
 
     public function getList() {
-      return $this->model->query()->select(['id', 'description'])->get();
+      return $this->model->query()->select(['id', 'description', 'email'])->get();
     }
 
     public function delete($id) {
