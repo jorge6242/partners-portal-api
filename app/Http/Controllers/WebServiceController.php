@@ -25,8 +25,13 @@ class WebServiceController extends Controller
     ]);;
   }
 
-  public function getUnpaidInvoices()  { 
-    return $this->soapService->getUnpaidInvoices();
+  public function getUnpaidInvoices()  {
+    $user = auth()->user()->username;
+    return $this->soapService->getUnpaidInvoices($user);
+  }
+
+  public function getUnpaidInvoicesByShare(Request $request)  {
+    return $this->soapService->getUnpaidInvoicesByShare($request['share']);
   }
 
   public function getReportedPayments()  {
@@ -97,6 +102,26 @@ class WebServiceController extends Controller
 //         $sheetData[] = $rows;
 //       }
 // } while ($stmt->nextRowset());
+
+  }
+
+  public function setManualInvoicePayment(Request $request){
+    
+    $user = auth()->user()->username;
+    $data = \DB::connection('sqlsrv_backoffice')->statement('exec sp_PortalPagoFacturaManual ?,?,?,?,?', 
+    array($request['share'],$request['numFactura'], $request['idPago'], $request['fechaPago'], 'MANUAL'));  
+   
+    if(!$data) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error de registro'
+      ])->setStatusCode(400);;
+    }
+
+    return response()->json([
+      'success' => true,
+      'message' => $data
+    ]);
 
   }
    
