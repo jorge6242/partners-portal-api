@@ -11,7 +11,9 @@ class Person extends Model
     
     protected $fillable = [
         'name', 
-        'last_name', 
+        'last_name',
+        'name2',
+        'last_name2',
         'rif_ci', 
         'passport', 
         'card_number', 
@@ -44,6 +46,8 @@ class Person extends Model
         'branch_company_id',
         'company',
         'access_code',
+        'name2',
+        'last_name2',
     ];
 
     /**
