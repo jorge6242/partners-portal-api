@@ -29,13 +29,12 @@ class Notificaciones extends Model
         'sRespuesta',
     ];
 
-    public function setdFechaAttribute($value) {
-        $this->attributes['dFecha'] = Carbon::now();
+    public function setdFechaAttribute() {
+        $this->attributes['dFecha'] =  Carbon::now()->format('Y-m-d H:i:s');
     }
 
-    public function setdFechaProcesadaAttribute($value) {
-        $this->attributes['dFechaProgramada'] = Carbon::now();
+    public function setdFechaProgramadaAttribute() {
+        $this->attributes['dFechaProgramada'] = Carbon::now()->format('Y-m-d H:i:s');
     }
-
     public $timestamps = false;
 }
