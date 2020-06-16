@@ -106,6 +106,22 @@ return [
                 PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => true
             ),
         ],
+        'sqlsrv_notificaciones' => [
+            'driver' => env('DB_NOTIFICACIONES_CONNECTION'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_NOTIFICACIONES_HOST'),
+            'port' => env('DB_NOTIFICACIONES_PORT'),
+            'database' => env('DB_NOTIFICACIONES_DATABASE'),
+            'username' => env('DB_NOTIFICACIONES_USERNAME'),
+            'password' => env('DB_NOTIFICACIONES_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'options'   => array(
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => true
+            ),
+        ],
 
     ],
 

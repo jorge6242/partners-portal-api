@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Notificaciones extends Model
 {
+    protected $connection = "sqlsrv_notificaciones";
     protected $table = 'Notificaciones';
 
     protected $fillable = [      
