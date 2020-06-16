@@ -125,7 +125,7 @@ class SoapService
             $arrlength = @count($registros);
             $acumulado = 0;
             for($x = 0; $x < $arrlength; $x++) {
-                if($registros[$x]->saldo == 0) {
+                if($registros[$x]->saldo > 0) {
                   $monto = $registros[$x]->saldo;
                   $acumulado = bcadd($acumulado, $monto, 2);
                   $registros[$x]->acumulado = $acumulado; 

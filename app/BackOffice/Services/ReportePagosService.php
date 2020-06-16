@@ -46,9 +46,10 @@ class ReportePagosService {
 
 	public function create($attributes) {
 		Storage::disk('payments')->put('test.txt','Content');
+		$date = Carbon::now()->format('Y-m-d-H:i:s');
+		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
-			$date = Carbon::now()->format('Y-m-d-H:i:s');
 			$parseFile = $this->validateFile($attributes['file1']);
 			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
 			$indice = rand(1,5);
@@ -61,7 +62,7 @@ class ReportePagosService {
 			} else {
 				Storage::disk('payments')->put($filename,$parseFile->content);
 			}
-			$attr = [ 'Archivos' => $filename];
+			$attr = [ 'Archivos' => $filename, 'status' => $attributes['status']];
 			$this->repository->update($data->id, $attr);
 		}
 
