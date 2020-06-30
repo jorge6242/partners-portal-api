@@ -69,4 +69,8 @@ class UserRepository  {
                   })->with('roles')->get();
         return $search;
     }
+    public function check($request)
+    {
+      return $this->model->where('username', $request['username'])->first();
+    }
 }
