@@ -45,7 +45,7 @@ class MenuItemIconRepository  {
         'slug', 
         'description',
         'import',
-    ])->get();
+    ])->orderBy('name','asc')->get();
     }
 
     public function delete($id) {
