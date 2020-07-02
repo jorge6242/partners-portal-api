@@ -18,7 +18,7 @@ class BancoEmisorRepository  {
     }
   
     public function all() {
-      $data = \DB::connection('sqlsrv_backoffice')->select(" SELECT * from portalpagos_BancoEmisor where UPPER(cNombreBanco)!='EFECTIVO'  ORDER BY cNombreBanco ASC");
+      $data = \DB::connection('sqlsrv_backoffice')->select(" SELECT * from portalpagos_BancoEmisor where UPPER(cNombreBanco) NOT LIKE '%EFECTIVO%'  ORDER BY cNombreBanco ASC");
       return $data;
     }
 }
