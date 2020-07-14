@@ -39,7 +39,7 @@ class ReportePagosRepository  {
 
     public function filter($queryFilter) {
       $searchQuery = $queryFilter;
-      return $search = $this->model->query()->where(function($q) use($searchQuery) {
+      $search = $this->model->query()->where(function($q) use($searchQuery) {
         if ($searchQuery->query('banco') !== NULL) {
           $query = $searchQuery->query('banco');
           $q->whereHas('bancoOrigen', function($qr) use ($query) {
@@ -62,5 +62,15 @@ class ReportePagosRepository  {
           $q->where('Login', 'like', "%{$searchQuery->query('accion')}%");
         }
       })->with(['cuenta','bancoOrigen'])->paginate($searchQuery->query('perPage'));
+
+      foreach ($search as $key => $value) {
+        if($value->Archivos !== '') {
+          $search[$key]->Archivos = url('storage/payments/'.$value->Archivos);
+        } else {
+          $value->Archivos = null;
+        }
+      }
+
+      return $search;
     }
 }
