@@ -17,7 +17,8 @@ class MenuItem extends Model
         'enabled',
         'menu_id',
         'menu_item_icon_id',
-        'show_mobile'
+        'show_mobile',
+        'show_desk'
     ];
 
     /**
