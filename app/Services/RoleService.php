@@ -31,17 +31,11 @@ class RoleService {
 	public function update($request, $id) {
 
 	$role = $this->repository->find($id);
-	if ($this->repository->checkRecord($request['slug'])) {
-		return response()->json([
-			'success' => false,
-			'message' => 'El slug ya existe'
-		])->setStatusCode(400);
-	}
 	$role->revokeAllPermissions();
 	$role = $this->repository->find($id);
 	$permissions = json_decode($request['permissions']);
 	
-	if(count($permissions)) {
+	if($request['permissions'] !== null && count($permissions)) {
 		foreach ($permissions as $permission) {
 			$role->assignPermission($permission);
 		}
