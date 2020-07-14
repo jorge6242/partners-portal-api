@@ -94,7 +94,7 @@ class PersonService {
 			$request['picture'] = "partner-empty.png";
 		}
 	}
-	if ($request['profession_list']) {
+	if ($request['profession_list'] !== null && $request['profession_list']) {
 		$professions = json_decode($request['profession_list']);
 		if(count($professions)) {
 			if($this->personProfessionRepository->findPartner($id)){
@@ -107,7 +107,7 @@ class PersonService {
 		}
 	}
 
-	if ($request['country_list']) {
+	if ($request['country_list'] !== null && $request['country_list']) {
 		$countries = json_decode($request['country_list']);
 		if(count($countries)) {
 			if($this->personCountryRepository->findPartner($id)){
@@ -120,7 +120,7 @@ class PersonService {
 		}
 	}
 
-	if ($request['sport_list']) {
+	if ($request['sport_list'] !== null && $request['sport_list']) {
 		$sports = json_decode($request['sport_list']);
 		if(count($sports)) {
 			if($this->personSportRepository->findPartner($id)){
@@ -133,7 +133,7 @@ class PersonService {
 		}
 	}
 
-	if ($request['lockers']) {
+	if ($request['lockers'] !== null && $request['lockers']) {
 		$lockers = $request['lockers'];
 		if(count($lockers['itemsToAdd'])) {
 			foreach ($lockers['itemsToAdd'] as $itemsToAdd) {
