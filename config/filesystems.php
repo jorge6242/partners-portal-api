@@ -69,7 +69,7 @@ return [
         ],
         'payments' => [
             'driver' => 'local',
-            'root' => public_path('storage/payments'),
+            'root' => public_path('storage\payments'),
         ],
     ],
 
