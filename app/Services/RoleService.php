@@ -19,7 +19,7 @@ class RoleService {
 	}
 
 	public function create($request) {
-		if ($this->repository->checkRecord($request['description'])) {
+		if ($this->repository->checkRecord($request['slug'])) {
             return response()->json([
                 'success' => false,
                 'message' => 'El registro ya existe'
@@ -31,6 +31,12 @@ class RoleService {
 	public function update($request, $id) {
 
 	$role = $this->repository->find($id);
+	if ($this->repository->checkRecord($request['slug'])) {
+		return response()->json([
+			'success' => false,
+			'message' => 'El slug ya existe'
+		])->setStatusCode(400);
+	}
 	$role->revokeAllPermissions();
 	$role = $this->repository->find($id);
 	$permissions = json_decode($request['permissions']);

@@ -45,7 +45,7 @@ class RoleRepository  {
 
     public function checkRecord($name)
     {
-      $response = $this->model->where('description', $name)->first();
+      $response = $this->model->where('slug', $name)->first();
       if ($response) {
         return $response;
       }
