@@ -15,7 +15,7 @@ class ReportePagosRepository  {
         $payments = $this->model->query()->with(['cuenta','bancoOrigen'])->paginate($perPage);
         foreach ($payments as $key => $value) {
           if($value->Archivos !== null) {
-            $payments[$key]->Archivos = url('payments/'.$value->Archivos);
+            $payments[$key]->Archivos = url('storage/reportedPayments/'.$value->Archivos);
           }
         }
         return $payments;
@@ -65,7 +65,7 @@ class ReportePagosRepository  {
 
       foreach ($search as $key => $value) {
         if($value->Archivos !== '') {
-          $search[$key]->Archivos = asset('payments/'.$value->Archivos);
+          $search[$key]->Archivos = url('storage/reportedPayments/'.$value->Archivos);
         } else {
           $value->Archivos = null;
         }
