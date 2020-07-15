@@ -57,10 +57,10 @@ class ReportePagosService {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 					$filename = $date.'-'.$data->id.'.png';
 				}
-				\Image::make($attributes['file1'])->save(public_path('storage/reportedPayments/').$filename);
+				\Image::make($attributes['file1'])->save(public_path('storage/partners/').$filename);
 			} else {
 				//Storage::disk('payments')->put($filename,$parseFile->content);
-				\File::put(public_path(). '/storage/reportedPayments/' . $filename, $parseFile->content);
+				\File::put(public_path(). '/storage/partners/' . $filename, $parseFile->content);
 			}
 			$attr = [ 'Archivos' => $filename, 'status' => $attributes['status']];
 			$this->repository->update($data->id, $attr);
