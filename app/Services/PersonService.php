@@ -292,7 +292,7 @@ class PersonService {
 	}
 
 	public function createPaymentReport($attributes) {
-		$date = Carbon::now()->format('Y-m-d-H:i:s');
+		$date = Carbon::now()->format('Y-m-d');
 		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
 		$data = $this->reportePagosRepository->create($attributes);
 		if($attributes['file1'] !== null) {
