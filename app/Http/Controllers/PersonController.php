@@ -437,4 +437,18 @@ class PersonController extends Controller
             ]);
     }
 
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createPaymentReport(Request $request)
+    {
+        $data = $request->all();
+        $data = $this->service->createPaymentReport($data, $request);
+        return $data;
+    }
+
+
 }

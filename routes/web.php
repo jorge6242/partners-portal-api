@@ -132,6 +132,7 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/person-families-partner', 'PersonController@getFamilyByPartner');
         Route::get('/person-partners', 'PersonController@getPartners');
         Route::get('/person-search-partners', 'PersonController@searchByPartners');
+        Route::post('/store-payment-report', 'PersonController@createPaymentReport');
 
         Route::get('/check-login', 'UserController@checkLogin');
         Route::resource('/user', 'UserController');

@@ -11,7 +11,10 @@ use App\Repositories\PersonLockerRepository;
 use App\Repositories\PersonExceptionRepository;
 use App\Repositories\ShareRepository;
 use App\Repositories\PersonRelationRepository;
+use App\BackOffice\Repositories\ReportePagosRepository;
+
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PersonService {
 
@@ -23,7 +26,8 @@ class PersonService {
 		PersonLockerRepository $personLockerRepository,
 		PersonExceptionRepository $personExceptionRepository,
 		ShareRepository $shareRepository,
-		PersonRelationRepository $personRelationRepository
+		PersonRelationRepository $personRelationRepository,
+		ReportePagosRepository $reportePagosRepository
 		) {
 		$this->person = $person;
 		$this->personProfessionRepository = $personProfessionRepository;
@@ -33,6 +37,7 @@ class PersonService {
 		$this->personExceptionRepository = $personExceptionRepository;
 		$this->shareRepository = $shareRepository;
 		$this->personRelationRepository = $personRelationRepository;
+		$this->reportePagosRepository = $reportePagosRepository;
 	}
 
 	public function index($perPage) {
@@ -268,5 +273,17 @@ class PersonService {
 		$person = $this->shareRepository->findByShare($shareUser);
 		return $this->person->getFamilyByPartner($person->partner->id);
 	}
+
+	public function createPaymentReport($attributes) {
+		$date = Carbon::now()->format('Y-m-d-H:i:s');
+		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
+		$data = $this->reportePagosRepository->create($attributes);
+		if($attributes['file1'] !== null) {		
+			\Image::make($attributes['file1'])->save(public_path('storage/partners/prueba.png'));
+			$attr = [ 'Archivos' => 'prueba.png', 'status' => $attributes['status']];
+			$this->reportePagosRepository->update($data->id, $attr);
+		}
+		return $data;
+	  }
 
 }
