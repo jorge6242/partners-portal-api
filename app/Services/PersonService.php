@@ -299,7 +299,7 @@ class PersonService {
 			$parseFile = $this->validateFile($attributes['file1']);
 			$filename = $date.'-'.$data->id.'.png';
 			$indice = rand(1,5);
-			\Image::make($attributes['file1'])->save(public_path('storage/partners/prueba.png'));
+			\Image::make($attributes['file1'])->save(public_path('storage/partners/'.$filename));
 			// if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
 			// 	if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
 			// 		$filename = $date.'-'.$data->id.'.png';
