@@ -274,13 +274,42 @@ class PersonService {
 		return $this->person->getFamilyByPartner($person->partner->id);
 	}
 
+	public function validateFile($file) {
+
+		$fileToParse = preg_replace('/^data:application\/\w+;base64,/', '', $file);
+		$ext = explode(';', $file)[0];
+		$ext = explode('/', $ext)[1];
+
+		$find = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,';
+		$pos = strpos($file, $find);
+		if($pos !== false) {
+			$fileToParse = str_replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,', '', $file);
+			$ext = 'docx';
+		}
+		$base64File = base64_decode($fileToParse);
+		
+		return (object)['ext' => $ext, 'content' => $base64File];
+	}
+
 	public function createPaymentReport($attributes) {
 		$date = Carbon::now()->format('Y-m-d-H:i:s');
 		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
 		$data = $this->reportePagosRepository->create($attributes);
-		if($attributes['file1'] !== null) {		
-			\Image::make($attributes['file1'])->save(public_path('storage/partners/prueba.png'));
-			$attr = [ 'Archivos' => 'prueba.png', 'status' => $attributes['status']];
+		if($attributes['file1'] !== null) {
+			$parseFile = $this->validateFile($attributes['file1']);
+			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
+			$indice = rand(1,5);
+			
+			if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
+				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
+					$filename = $date.'-'.$data->id.'.png';
+				}
+				\Image::make($attributes['file1'])->save(public_path('storage/partners/').$filename);
+			} else {
+				//Storage::disk('payments')->put($filename,$parseFile->content);
+				\File::put(public_path(). '/storage/partners/' . $filename, $parseFile->content);
+			}
+			$attr = [ 'Archivos' => $filename, 'status' => $attributes['status']];
 			$this->reportePagosRepository->update($data->id, $attr);
 		}
 		return $data;
