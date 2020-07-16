@@ -49,13 +49,13 @@ class ReportePagosService {
 		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
+			$hash = bcrypt(rand());
 			$parseFile = $this->validateFile($attributes['file1']);
-			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
-			$indice = rand(1,5);
+			$filename = $date.'-'.$data->id.'-'.$hash.'.'.$parseFile->ext;
 			
 			if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
 				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
-					$filename = $date.'-'.$data->id.'.png';
+					$filename = $date.'-'.$data->id.'-'.$hash.'.png';
 				}
 				\Image::make($attributes['file1'])->save(public_path('storage/reportedPayments/').$filename);
 			} else {
