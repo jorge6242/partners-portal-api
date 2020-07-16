@@ -297,18 +297,18 @@ class PersonService {
 		$data = $this->reportePagosRepository->create($attributes);
 		if($attributes['file1'] !== null) {
 			$parseFile = $this->validateFile($attributes['file1']);
-			$filename = $date.'-'.$data->id.'.png';
+			$filename = $date.'-'.$data->id.'.'.$parseFile->ext;
 			$indice = rand(1,5);
-			\Image::make($attributes['file1'])->save(public_path('storage/partners/'.$filename));
-			// if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
-			// 	if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
-			// 		$filename = $date.'-'.$data->id.'.png';
-			// 	}
-			// 	\Image::make($attributes['file1'])->save(public_path('storage/partners/').$filename);
-			// } else {
-			// 	//Storage::disk('payments')->put($filename,$parseFile->content);
-			// 	\File::put(public_path(). '/storage/partners/' . $filename, $parseFile->content);
-			// }
+			
+			if($parseFile->ext === 'png' || $parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg' ) {
+				if($parseFile->ext === 'jpg' || $parseFile->ext === 'jpeg') {
+					$filename = $date.'-'.$data->id.'.png';
+				}
+				\Image::make($attributes['file1'])->save(public_path('storage/partners/').$filename);
+			} else {
+				//Storage::disk('payments')->put($filename,$parseFile->content);
+				\File::put(public_path(). '/storage/partners/' . $filename, $parseFile->content);
+			}
 			$attr = [ 'Archivos' => $filename, 'status' => $attributes['status']];
 			$this->reportePagosRepository->update($data->id, $attr);
 		}
