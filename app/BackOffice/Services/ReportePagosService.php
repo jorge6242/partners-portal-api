@@ -50,6 +50,7 @@ class ReportePagosService {
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
 			$hash = bcrypt(rand());
+			$hash = substr($hash,0,20);
 			$parseFile = $this->validateFile($attributes['file1']);
 			$filename = $date.'-'.$data->id.'-'.$hash.'.'.$parseFile->ext;
 			
