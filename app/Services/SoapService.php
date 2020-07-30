@@ -109,6 +109,7 @@ class SoapService
   }
 
   public function getUnpaidInvoicesByShare($share) {
+    $currentUser = auth()->user();
     $url = $this->url;
     try{
         $client = $this->getWebServiceClient($url);
@@ -118,34 +119,43 @@ class SoapService
         ])->GetSaldoDetalladoXMLResult;
         $i = 0;
         $newArray = array();
-        foreach ($response as $key => $value) {
-            if ($i==1) {
-            $myxml = simplexml_load_string($value);				
-            $registros= $myxml->NewDataSet->Table;
-            $arrlength = @count($registros);
-            $acumulado = 0;
-            for($x = 0; $x < $arrlength; $x++) {
-                if($registros[$x]->saldo > 0) {
-                  $monto = $registros[$x]->saldo;
-                  $acumulado = bcadd($acumulado, $monto, 2);
-                  $registros[$x]->acumulado = $acumulado; 
-                  array_push($newArray, $registros[$x]);
-                }
-            }
-            }
-            $i++;
+        $acumulado = 0;
+
+        if($currentUser->share_from !== null && $currentUser->share_to !== null && (int)$share < (int)$currentUser->share_from && (int)$share < (int)$currentUser->share_to) {
+            return response()->json([
+              'success' => false,
+              'message' => 'La consulta esta fuera de los filtros de su perfil'
+            ])->setStatusCode(400);
         }
-        foreach ($newArray as $key => $value) {
-          $newArray[$key]->originalAmount = $value->saldo;
-          $newArray[$key]->saldo = number_format((float)$value->saldo,2);
-          $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
-          $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
-        }
+
+          foreach ($response as $key => $value) {
+              if ($i==1) {
+              $myxml = simplexml_load_string($value);				
+              $registros= $myxml->NewDataSet->Table;
+              $arrlength = @count($registros);
+              for($x = 0; $x < $arrlength; $x++) {
+                  if($registros[$x]->saldo > 0) {
+                      $monto = $registros[$x]->saldo;
+                      $acumulado = bcadd($acumulado, $monto, 2);
+                      $registros[$x]->acumulado = $acumulado;
+                      array_push($newArray, $registros[$x]);
+                  }
+              }
+              }
+              $i++;
+          }
+          foreach ($newArray as $key => $value) {
+            $newArray[$key]->originalAmount = $value->saldo;
+            $newArray[$key]->saldo = number_format((float)$value->saldo,2);
+            $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
+            $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
+          }
+
         return response()->json([
             'success' => true,
             'data' => $newArray,
             'total' => $acumulado
-        ]);;
+        ]);
     }
     catch(SoapFault $fault) {
         echo '<br>'.$fault;

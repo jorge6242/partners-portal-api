@@ -41,29 +41,44 @@ class ReportePagosRepository  {
 
     public function filter($queryFilter) {
       $searchQuery = $queryFilter;
-      $search = $this->model->query()->where(function($q) use($searchQuery) {
+      $user = auth()->user();
+      $search = $this->model->query()->where(function($q) use($searchQuery, $user) {
+
         if ($searchQuery->query('banco') !== NULL) {
           $query = $searchQuery->query('banco');
           $q->whereHas('bancoOrigen', function($qr) use ($query) {
             $qr->where('cNombreBanco', 'like', "%{$query}%");
           });
         }
-        if ($searchQuery->query('status') !== NULL) {
-          $q->where('status', $searchQuery->query('status'));
+
+        if($searchQuery->query('noInvoice') !== null && $searchQuery->query('noInvoice') == 1 ) {
+          $q->where('status', 4);
+        } else {
+          if ($searchQuery->query('status') !== NULL) {
+            $q->where('status', $searchQuery->query('status'));
+          }
         }
 
         if ($searchQuery->query('referencia') !== NULL) {
           $q->where('NroReferencia', 'like', "%{$searchQuery->query('referencia')}%");
         }
 
+        if ($searchQuery->query('dFechaRegistro') !== NULL) {
+          $q->where('dFechaRegistro','>=', $searchQuery->query('dFechaRegistro'));
+        }
+
         if ($searchQuery->query('bancoDestino') !== NULL) {
           $q->where('codCuentaDestino', $searchQuery->query('bancoDestino'));
+        }
+
+        if($user->share_from !== null && $user->share_to !== null) {
+          $q->whereBetween('Login', [ $user->share_from,  $user->share_to]);
         }
 
         if ($searchQuery->query('accion') !== NULL) {
           $q->where('Login', 'like', "%{$searchQuery->query('accion')}%");
         }
-      })->with(['cuenta','bancoOrigen'])->paginate($searchQuery->query('perPage'));
+      })->with(['cuenta','bancoOrigen'])->orderBy('dFechaRegistro','ASC')->paginate($searchQuery->query('perPage'));
 
       foreach ($search as $key => $value) {
         if($value->Archivos !== null) {
