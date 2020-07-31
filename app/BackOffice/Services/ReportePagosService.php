@@ -24,6 +24,9 @@ class ReportePagosService {
 	}
 
 	public function update($request, $id) {
+		if($request['fact_num'] !== null) {
+			$request['fact_date'] = Carbon::now();
+		}
 		return $this->repository->update($id, $request);
 	  }
 

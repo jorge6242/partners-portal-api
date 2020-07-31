@@ -25,6 +25,8 @@ class ReportePagos extends Model
         'dFechaPago',
         'Moneda',
         'Nota',
+        'fact_num',
+        'fact_date'
     ];
 
     /**
