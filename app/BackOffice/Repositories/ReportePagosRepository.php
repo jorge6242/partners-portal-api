@@ -33,7 +33,7 @@ class ReportePagosRepository  {
 
     public function update($id, array $attributes) {
         $user = auth()->user()->username;
-        if($attributes['status'] == 1) {
+        if($attributes['status'] == 2) {
           return \DB::connection('sqlsrv_backoffice')->statement('exec sp_PortalProcesarPago ?', array($id));
         }
         return $this->model->where('idPago', $id)->update($attributes);
