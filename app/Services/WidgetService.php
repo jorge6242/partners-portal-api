@@ -81,4 +81,8 @@ class WidgetService {
 	public function delete($id) {
       return $this->repository->delete($id);
 	}
+
+	public function search($id) {
+		return $this->repository->search($id);
+	  }
 }

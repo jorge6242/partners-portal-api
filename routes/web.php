@@ -191,6 +191,7 @@ Route::prefix('api/v1')->group(function () {
 
         Route::resource('/widget', 'WidgetController');
         Route::get('/widget-list', 'WidgetController@getList');
+        Route::get('/widget-search', 'WidgetController@search');
 
         Route::resource('/notificacion', 'NotificacionesController');
         

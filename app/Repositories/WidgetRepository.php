@@ -100,4 +100,18 @@ class WidgetRepository  {
       }
       return false; 
     }
+
+            /**
+     * get banks by query params
+     * @param  object $queryFilter
+    */
+    public function search($queryFilter) {
+      $search;
+      if($queryFilter->query('term') === null) {
+        $search = $this->model->all();  
+      } else {
+        $search = $this->model->where('description', 'like', '%'.$queryFilter->query('term').'%')->get();
+      }
+     return $search;
+    }
 }
