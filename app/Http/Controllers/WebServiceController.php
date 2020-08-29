@@ -7,13 +7,18 @@ use Illuminate\Support\Facades\DB;
 use Doctrine\DBAL\Driver\PDOConnection;
 
 use App\Services\SoapService;
+use App\BackOffice\Services\ConsultaSaldosService;
 
 class WebServiceController extends Controller
 {
 
-  public function __construct(SoapService $soapService)
+  public function __construct(
+    SoapService $soapService,
+    ConsultaSaldosService $consultaSaldosService
+    )
 	{
 		$this->soapService = $soapService;
+		$this->consultaSaldosService = $consultaSaldosService;
     }
 
   public function getBalance()  { 
@@ -25,8 +30,11 @@ class WebServiceController extends Controller
     ]);;
   }
 
-  public function getUnpaidInvoices()  {
+  public function getUnpaidInvoices(Request $request)  {
     $user = auth()->user()->username;
+    if($request['isCache'] == "true") {
+      return $this->consultaSaldosService->index($user);
+    }
     return $this->soapService->getUnpaidInvoices($user);
   }
 
@@ -61,7 +69,7 @@ class WebServiceController extends Controller
       return response()->json([
         'success' => false,
         'message' => 'Error de registro'
-      ])->setStatusCode(400);;
+      ])->setStatusCode(400);
     }
 
     return response()->json([

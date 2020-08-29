@@ -2,14 +2,19 @@
 
 namespace App\Services; 
 
+use App\BackOffice\Repositories\ConsultaSaldosRepository;
+
 use SoapClient;
 
 class SoapService
 {
 
-  public function __construct() {
+  public function __construct(
+    ConsultaSaldosRepository $consultaSaldosRepository
+  ) {
 		$this->url = env('WS_SOCIO_URL');
 		$this->domain = env('WS_SOCIO_DOMAIN_ID');
+		$this->consultaSaldosRepository = $consultaSaldosRepository;
 	}
 
   public function getToken() {
@@ -97,11 +102,13 @@ class SoapService
           $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
           $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
         }
+        $this->consultaSaldosRepository->deleteAndInsert($newArray);
         return response()->json([
             'success' => true,
             'data' => $newArray,
-            'total' => $acumulado
-        ]);;
+            'total' => $acumulado,
+            'cache' => false,
+        ]);
     }
     catch(SoapFault $fault) {
         echo '<br>'.$fault;

@@ -49,7 +49,6 @@ class PassportController extends Controller
     public function login(Request $request)
     { 
         $header = $request->header();
-        $header = $header['partners-application'];
         $credentials = [
             'username' => $request->username,
             'password' => $request->password
