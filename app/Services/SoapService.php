@@ -3,6 +3,8 @@
 namespace App\Services; 
 
 use App\BackOffice\Repositories\ConsultaSaldosRepository;
+use App\BackOffice\Repositories\EstadoCuentaRepository;
+use App\BackOffice\Repositories\SaldoRepository;
 
 use SoapClient;
 
@@ -10,11 +12,15 @@ class SoapService
 {
 
   public function __construct(
-    ConsultaSaldosRepository $consultaSaldosRepository
+    ConsultaSaldosRepository $consultaSaldosRepository,
+    EstadoCuentaRepository $estadoCuentaRepository,
+    SaldoRepository $saldoRepository
   ) {
 		$this->url = env('WS_SOCIO_URL');
 		$this->domain = env('WS_SOCIO_DOMAIN_ID');
 		$this->consultaSaldosRepository = $consultaSaldosRepository;
+		$this->estadoCuentaRepository = $estadoCuentaRepository;
+		$this->saldoRepository = $saldoRepository;
 	}
 
   public function getToken() {
@@ -39,20 +45,27 @@ class SoapService
       "connection_timeout" => 180, 
       'stream_context' => stream_context_create($opts),
     );
-    return new SoapClient($url,$params);
+    try {
+      return new SoapClient($url,$params); 
+    } catch (\Throwable $th) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error de conexion'
+      ])->setStatusCode(500);
+    }
   }
 
     public function getSaldo() {
+      try{
         $url = $this->url;
-        try{
-            $client = $this->getWebServiceClient($url);
-            $user = auth()->user()->username;
-            $response = $client->getSaldoXML([
-              'group_id' => $user,
-              'token' => $this->getToken(),
-            ])->GetSaldoXMLResult;
-            $i = 0;
-            $newArray = array();
+        $client = $this->getWebServiceClient($url);
+          $user = auth()->user()->username;
+          $response = $client->getSaldoXML([
+            'group_id' => $user,
+            'token' => $this->getToken(),
+          ])->GetSaldoXMLResult;
+          $i = 0;
+          $newArray = array();
             foreach ($response as $key => $value) {
               if ($i==1) {
                 $myxml = simplexml_load_string($value);				
@@ -64,16 +77,21 @@ class SoapService
               }
               $i++;
             }
+            $this->saldoRepository->deleteAndInsert($newArray[0]);
             return $newArray;
         }
         catch(SoapFault $fault) {
             echo '<br>'.$fault;
+            return response()->json([
+              'success' => false,
+              'message' => 'En estos momentos la informacion no esta disponible'
+          ])->setStatusCode(500);
         }
   }
 
   public function getUnpaidInvoices($share) {
-    $url = $this->url;
     try{
+        $url = $this->url;
         $client = $this->getWebServiceClient($url);
         $response = $client->GetSaldoDetalladoXML([
             'group_id' => $share,
@@ -112,6 +130,10 @@ class SoapService
     }
     catch(SoapFault $fault) {
         echo '<br>'.$fault;
+        return response()->json([
+          'success' => false,
+          'message' => 'En estos momentos la informacion no esta disponible'
+      ])->setStatusCode(500);
     }
   }
 
@@ -165,7 +187,10 @@ class SoapService
         ]);
     }
     catch(SoapFault $fault) {
-        echo '<br>'.$fault;
+      return response()->json([
+        'success' => false,
+        'message' => 'En estos momentos la informacion no esta disponible'
+    ])->setStatusCode(500);
     }
   }
 
@@ -198,7 +223,10 @@ class SoapService
         return $newArray;
     }
     catch(SoapFault $fault) {
-        echo '<br>'.$fault;
+      return response()->json([
+        'success' => false,
+        'message' => 'En estos momentos la informacion no esta disponible'
+    ])->setStatusCode(500);
     }
   }
 
@@ -235,15 +263,21 @@ class SoapService
         $newArray[$key]->total_fac = number_format((float)$value->total_fac,2);
         $newArray[$key]->acumulado = number_format((float)$value->acumulado,2);
       }
+      $this->estadoCuentaRepository->deleteAndInsert($newArray);
       return response()->json([
         'success' => true,
         'data' => $newArray,
-        'total' => $acumulado
-      ]);;
+        'total' => $acumulado,
+        'cache' => false,
+      ]);
 
     }
     catch(SoapFault $fault) {
       echo '<br>'.$fault;
+      return response()->json([
+        'success' => false,
+        'message' => 'En estos momentos la informacion no esta disponible'
+    ])->setStatusCode(500);
     }
 }
 

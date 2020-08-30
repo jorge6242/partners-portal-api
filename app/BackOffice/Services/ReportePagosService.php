@@ -50,6 +50,9 @@ class ReportePagosService {
 	public function create($attributes) {
 		$date = Carbon::now()->format('Y-m-d');
 		$attributes['dFechaRegistro'] = Carbon::now()->format('Y-m-d H:i:s');
+		$attributes['dateSync'] = null;
+		$attributes['isSync'] = 0;
+		$attributes['dCreated'] = Carbon::now();
 		$data = $this->repository->create($attributes);
 		if($attributes['file1'] !== null) {
 			$hash = bcrypt(rand());

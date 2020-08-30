@@ -26,7 +26,10 @@ class ReportePagos extends Model
         'Moneda',
         'Nota',
         'fact_num',
-        'fact_date'
+        'fact_date',
+        'dateSync',
+        'isSync',
+        'dCreated',
     ];
 
     /**

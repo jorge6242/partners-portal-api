@@ -8,26 +8,37 @@ use Doctrine\DBAL\Driver\PDOConnection;
 
 use App\Services\SoapService;
 use App\BackOffice\Services\ConsultaSaldosService;
+use App\BackOffice\Services\EstadoCuentaService;
+use App\BackOffice\Services\SaldoService;
 
 class WebServiceController extends Controller
 {
 
   public function __construct(
     SoapService $soapService,
-    ConsultaSaldosService $consultaSaldosService
+    ConsultaSaldosService $consultaSaldosService,
+    EstadoCuentaService $estadoCuentaService,
+    SaldoService $saldoService
     )
 	{
 		$this->soapService = $soapService;
 		$this->consultaSaldosService = $consultaSaldosService;
+		$this->estadoCuentaService = $estadoCuentaService;
+		$this->saldoService = $saldoService;
     }
 
-  public function getBalance()  { 
+  public function getBalance(Request $request)  { 
+    $user = auth()->user()->username;
+    if($request['isCache'] == "true") {
+      return $this->saldoService->index($user);
+    }
     $data = $this->soapService->getSaldo();
     $data[0]->saldo = number_format((float)$data[0]->saldo,2);
     return response()->json([
+      'cache' => true,
       'success' => true,
       'data' => $data,
-    ]);;
+    ]);
   }
 
   public function getUnpaidInvoices(Request $request)  {
@@ -50,7 +61,11 @@ class WebServiceController extends Controller
     ]);;
   }
 
-  public function getStatusAccount()  { 
+  public function getStatusAccount(Request $request)  {
+    $user = auth()->user()->username;
+    if($request['isCache'] == "true") {
+      return $this->estadoCuentaService->index($user);
+    }
     return $this->soapService->getStatusAccount();
   }
   
