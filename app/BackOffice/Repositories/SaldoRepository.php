@@ -19,7 +19,7 @@ class SaldoRepository  {
     }
   
     public function all($share) {
-        $data = $this->model->query()->where('co_cli', $share)->first();
+        $data = $this->model->query()->where('co_cli', $share)->orderBy('dCreated', 'desc')->first();
         $cacheValidMinsParameter = $this->parameterModel->query()->where('parameter', 'CACHE_VALID_MINS')->first();
         $newArray = array();
         $fechaCache = \DB::connection('sqlsrv_backoffice')->select("SELECT DATEDIFF(MINUTE, MAX(dCreated), GETDATE()) minutes  from  portalpagos_Saldo where co_cli='".$share."'");
@@ -51,12 +51,12 @@ class SaldoRepository  {
     public function deleteAndInsert($data) {
         $user = auth()->user()->username;
         $this->model->query()->where('co_cli', $user)->delete();
-            $this->model->create([
-                'co_cli' => $user, 
-                'saldo' => number_format((float)$data->saldo,2),
-                'status' => $data->status, 
-                'dCreated' => Carbon::now(),
-            ]);
+        $this->model->create([
+            'co_cli' => $user, 
+            'saldo' => number_format((float)$data->saldo,2),
+            'status' => $data->status, 
+            'dCreated' => Carbon::now(),
+        ]);
     }
 
 }
