@@ -48,13 +48,24 @@ class PassportController extends Controller
      */
     public function login(Request $request)
     { 
-        $header = $request->header();
+        //$exist = User::where('username', $request->username)->orWhere('username_legacy', $request->username)->first();
+        $exist = User::where('username', $request->username)->orWhere(function($q) use($request) {
+                    $q->whereNotNull('username_legacy');
+                    $q->where('username_legacy',$request->username);
+                })->first();
+
+        if(!$exist) {
+            return response()->json([
+                'succeswes' => false,
+                'message' => 'Usuario no existe'
+            ])->setStatusCode(401);
+        }
         $credentials = [
-            'username' => $request->username,
+            'username' => $exist->username,
             'password' => $request->password
         ];
  
-        if (auth()->attempt($credentials)) {
+        if ($exist && auth()->attempt($credentials)) {
             $token = auth()->user()->createToken('TutsForWeb')->accessToken;
             $user = auth()->user();
             $user->roles = auth()->user()->getRoles();

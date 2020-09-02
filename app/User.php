@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password', 
         'username', 
         'share_from', 
-        'share_to'
+        'share_to',
+        'username_legacy'
     ];
 
     /**

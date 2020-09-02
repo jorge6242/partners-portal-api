@@ -32,21 +32,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $userRequest = $request->all();
         if ($this->userService->checkUser($request['email'])) {
             return response()->json([
                 'success' => false,
-                'message' => 'User already exist'
+                'message' => 'Correo ya existe'
             ])->setStatusCode(400);
         }
-        $user = $this->userService->create($userRequest);
-        if ($user) {
-            return response()->json([
-                'success' => true,
-                'data' => $user
-            ])->setStatusCode(200);
-        }
+        return $this->userService->create($userRequest);
     }
 
     /**
@@ -76,13 +70,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $userRequest = $request->all();
-        $user = $this->userService->update($userRequest, $id);
-        if($user) {
-            return response()->json([
-                'success' => true,
-                'data' => $user
-            ]);
-        }
+        return $this->userService->update($userRequest, $id);
+        
     }
 
     /**

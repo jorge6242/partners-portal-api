@@ -73,4 +73,14 @@ class UserRepository  {
     {
       return $this->model->where('username', $request['username'])->first();
     }
+
+    public function checkUsernameLegacy($request)
+    {
+      return $this->model->where('username_legacy', $request['username_legacy'])->first();
+    }
+
+    public function checkFieldBeforeUpdate($field, $value, $id)
+    {
+      return $this->model->where($field, $value)->where('id', '!=',$id)->first();
+    }
 }

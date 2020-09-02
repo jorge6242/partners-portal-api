@@ -30,10 +30,46 @@ class UserService {
 		}
 		
 		public function create($request) {
-			return $this->repository->create($request);
+			if ($this->repository->checkUsernameLegacy($request)) {
+				return response()->json([
+					'success' => false,
+					'message' => 'El usuario legacy ya existe'
+				])->setStatusCode(400);
+			}
+
+			if ($this->repository->check($request)) {
+				return response()->json([
+					'success' => false,
+					'message' => 'El usuario ya existe'
+				])->setStatusCode(400);
+			}
+			$data = $this->repository->create($request);
+			if ($data) {
+				return response()->json([
+					'success' => true,
+					'data' => $data
+				])->setStatusCode(200);
+			}
 		}
 
 		public function update($request, $id) {
+
+			if ($this->repository->checkFieldBeforeUpdate('username_legacy' ,$request['username_legacy'], $id)) {
+				return response()->json([
+					'success' => false,
+					'message' => 'El usuario legacy ya existe'
+				])->setStatusCode(400);
+			}
+
+
+			if ($this->repository->checkFieldBeforeUpdate('email' ,$request['email'], $id)) {
+				return response()->json([
+					'success' => false,
+					'message' => 'El correo ya existe'
+				])->setStatusCode(400);
+			}
+
+
 			$user = $this->repository->find($id);
 			$user->revokeAllRoles();
 			$user = $this->repository->find($id);
@@ -44,7 +80,13 @@ class UserService {
 					$user->assignRole($role);
 				}
 			}
-			return $this->repository->update($id, $request);
+			$data = $this->repository->update($id, $request);
+			if($data) {
+				return response()->json([
+					'success' => true,
+					'data' => $data
+				]);
+			}
 		}
 
 		public function read($id) {
